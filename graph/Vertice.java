@@ -21,6 +21,6 @@ public class Vertice<E> {
     
     // Método para obtener la lista de adyacencia (las aristas conectadas a este vértice) 
     public ListaEnlazada<Arista<E>> getListaAdyacencia() {
-        return listaAdyacencia; // Retorna la lista de aristas que representan las conexiones de este vértice
+        return listaAdyacencia; // Retorna la lista de aristas que representan las conexiones de este vertice
     }
 }
