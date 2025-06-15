@@ -12,5 +12,11 @@ public class Arista<E> {
         this.peso = peso; // Asigna el parámetro al atributo del peso
     }
 
+    // Devuelve el vertice de destino de la arista
+    public Vertice<E> getReferenciaDestino(){
+        return referenciaDestino;
+    }
+
+    
 }
 
