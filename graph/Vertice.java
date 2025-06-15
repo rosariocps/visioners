@@ -8,4 +8,9 @@ public class Vertice<E> {
     private E dato; //Representa la información del vértice
     protected ListaEnlazada<Arista<E>> listaAdyacencia; // Contiene todas las aristas salientes de este vértice 
 
+    public Vertice(E dato) { //contructor
+        this.dato = dato;
+        listaAdyacencia = new ListaEnlazada<>();
+    }
+    
 }
