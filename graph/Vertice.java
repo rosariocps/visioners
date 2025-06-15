@@ -19,7 +19,7 @@ public class Vertice<E> {
     	return dato; // Retorna el valor almacenado en el atributo 'dato'
     }
     
-    // Metodo para obtener la lista de adyacencia (las aristas conectadas a este vértice) 
+    // Metodo para obtener la lista de adyacencia (las aristas conectadas a este vertice) 
     public ListaEnlazada<Arista<E>> getListaAdyacencia() {
         return listaAdyacencia; // Retorna la lista de aristas que representan las conexiones de este vertice
     }
