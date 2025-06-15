@@ -30,5 +30,11 @@ public class Arista<E> {
         }
         return false; // si no es una arista, devuelve false
     }
+
+    // MÉTODO PARA MOSTRAR LA ARISTA COMO TEXTO
+    @Override
+    public String toString(){
+        return referenciaDestino.getDato() + " (" + peso + ")"; // devuelve una cadena con el destino y el peso
+    }
 }
 
