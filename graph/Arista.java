@@ -8,15 +8,18 @@ public class Arista<E> {
 
     // Constructor
     public Arista(Vertice<E> referenciaDestino, double peso) {
-        this.referenciaDestino = referenciaDestino; // Asigna el parámetro al atributo del destino
+        this.referenciaDestino = referenciaDestino; // Asigna el parámetro al atributo de la referencia del destino
         this.peso = peso; // Asigna el parámetro al atributo del peso
     }
 
-    // Devuelve el vertice de destino de la arista
-    public Vertice<E> getReferenciaDestino(){
+    // GETTERS    
+    public Vertice<E> getReferenciaDestino(){ // Devuelve el vertice de destino de la arista
         return referenciaDestino;
     }
 
-    
+    public double getPeso(){ //Devuelve el peso de la arista
+        return peso;
+    }
+
 }
 
