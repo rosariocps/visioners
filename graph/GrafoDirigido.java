@@ -1,23 +1,22 @@
 package graph;
 
-//import linkedlist.ListaEnlazada;
-//import linkedlist.Nodo;
+import linkedlist.ListaEnlazada;
 
 public class GrafoDirigido<E> {
 
-    // Lista de todos los vértices (ubicaciones del almacén)
-    //protected ListaEnlazada<Vertice<E>> listaVertices;
+    //Lista de todos los vértices (ubicaciones del almacén)
+    protected ListaEnlazada<Vertice<E>> listaVertices;
 
     // Constructor
     public GrafoDirigido() {
-        //listaVertices = new ListaEnlazada<>();
+        listaVertices = new ListaEnlazada<>();
     }
 
     // ---------------- MÉTODOS PARA VÉRTICES ----------------
 
     // INSERTAR UN NUEVO VERTICE
     public void insertarVertice(E dato) {
-        
+
     }
 
     // ELIMINAR UN VÉRTICE Y SUS ARISTAS ASOCIADAS
@@ -31,10 +30,10 @@ public class GrafoDirigido<E> {
     }
 
     // BUSCAR UN VÉRTICE POR SU DATO
-    /*public Vertice<E> buscarVertice(E dato) {
+    public Vertice<E> buscarVertice(E dato) {
         
         return null;
-    }*/
+    }
 
     // ---------------- MÉTODOS PARA ARISTAS ----------------
 
