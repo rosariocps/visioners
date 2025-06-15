@@ -7,3 +7,8 @@ public class Arista<E> {
     private double peso; // Peso de la arista 
 
 }
+
+public Arista(Vertice<E> destino, double peso) {
+        this.destino = destino;
+        this.peso = peso;
+}
