@@ -2,13 +2,15 @@ package graph;
 
 public class Arista<E> {
 
-    //Atributos
+    // Atributos
     private Vertice<E> referenciaDestino; // Vértice de destino de la arista
     private double peso; // Peso de la arista 
 
+    // Constructor
+    public Arista(Vertice<E> referenciaDestino, double peso) {
+        this.referenciaDestino = referenciaDestino; // Asigna el parámetro al atributo del destino
+        this.peso = peso; // Asigna el parámetro al atributo del peso
+    }
+
 }
 
-public Arista(Vertice<E> destino, double peso) {
-        this.destino = destino;
-        this.peso = peso;
-}
