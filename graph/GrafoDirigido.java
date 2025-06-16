@@ -75,11 +75,11 @@ public class GrafoDirigido<E> {
             throw new RuntimeException("uno o ambos vértices no existen");
         }
 
-        boolean eliminado = verticeOrigen.listaAdyacencia.removeNodo(new Arista<>(verticeDestino));
-
-        if (!eliminado) {
+        if (!existeArista(origen, destino)) {
             throw new RuntimeException("la arista no existe");
         }
+
+        verticeOrigen.listaAdyacencia.removeNodo(new Arista<>(verticeDestino));
     }
 
     // MODIFICAR EL PESO DE UNA ARISTA EXISTENTE

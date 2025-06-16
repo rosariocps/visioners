@@ -76,14 +76,14 @@ public class ListaEnlazada<E> {
     }
 
     // Elimina el primer nodo que contenga el dato x 
-    public boolean removeNodo(E x) {
+    public void removeNodo(E x) {
         if (first == null) { // Si la lista está vacía
-            return false; // No hay nada que eliminar
-            }
+            return; // No hay nada que eliminar
+        }
 
         if (first.data.equals(x)) { // Si el primer nodo contiene el dato
             first = first.next; // Eliminamos el primer nodo
-            return true;
+            return;
         }
     
         Nodo<E> nodoCurrent = first; // Nodo siguiente al primero
@@ -91,11 +91,10 @@ public class ListaEnlazada<E> {
         while (nodoCurrent.next != null) { // Mientras haya nodos
             if (nodoCurrent.next.data.equals(x)) { // Si encontramos el dato
                 nodoCurrent.next = nodoCurrent.next.next; // Saltamos el nodo a eliminar
-                return true;
+                return;
             }
             nodoCurrent = nodoCurrent.next; // Avanzamos el actual
         }
-        return false;
     }    
 
     // Recorre y muestra todos los datos de la lista
