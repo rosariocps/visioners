@@ -27,7 +27,24 @@ public class GrafoDirigido<E> {
 
     // ELIMINAR UN VÉRTICE Y SUS ARISTAS ASOCIADAS
     public void eliminarVertice(E dato) {
-        
+        Vertice<E> verticeAEliminar = buscarVertice(dato);
+        if (verticeAEliminar == null) {
+            throw new RuntimeException("el vértice no existe");
+        }
+        // 1. Eliminar las aristas que llegan a este vértice desde otros vértices
+        Nodo<Vertice<E>> nodoActual = listaVertices.getFirst();
+        while (nodoActual != null) {
+            Vertice<E> vertice = nodoActual.getData();
+            if (!vertice.equals(verticeAEliminar)) {
+                vertice.listaAdyacencia.removeNodo(new Arista<>(verticeAEliminar));
+            }
+            nodoActual = nodoActual.getNext();
+        }
+        // 2. Eliminar todas las aristas que salen de este vértice (vaciar su lista de adyacencia)
+        verticeAEliminar.listaAdyacencia.destroyList(); 
+
+        // 3. Eliminar el vértice de la lista de vértices
+        listaVertices.removeNodo(verticeAEliminar);
     }
 
     // MODIFICAR EL DATO DE UN VÉRTICE
