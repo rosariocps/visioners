@@ -148,7 +148,30 @@ public class GrafoDirigido<E> {
     // MOSTRAR EL GRAFO COMO TEXTO
     @Override
     public String toString() {
-        
-        return "";
+        StringBuilder resultado = new StringBuilder();
+        Nodo<Vertice<E>> nodoActual = listaVertices.getFirst();
+
+        while (nodoActual != null) {
+            Vertice<E> vertice = nodoActual.getData();
+            resultado.append(vertice.getDato()).append(" --> ");
+
+            Nodo<Arista<E>> nodoArista = vertice.listaAdyacencia.getFirst();
+            if (nodoArista == null) {
+                resultado.append("Sin conexiones");
+            } else {
+                while (nodoArista != null) {
+                    Arista<E> arista = nodoArista.getData();
+                    resultado.append(arista.getReferenciaDestino().getDato())
+                            .append(" [")
+                            .append(arista.getPeso())
+                            .append("] ");
+                    nodoArista = nodoArista.getNext();
+                }
+            }
+            resultado.append("\n");
+            nodoActual = nodoActual.getNext();
+        }
+
+        return resultado.toString();
     }
 }
