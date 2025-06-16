@@ -110,8 +110,24 @@ public class GrafoDirigido<E> {
 
     // VERIFICAR SI EXISTE UNA ARISTA ENTRE DOS VERTICES
     public boolean existeArista(E origen, E destino) {
-        
-        return false;
+        Vertice<E> verticeOrigen = buscarVertice(origen); // busca el vértice origen
+        Vertice<E> verticeDestino = buscarVertice(destino); // busca el vértice destino
+
+        if (verticeOrigen == null || verticeDestino == null) {
+            return false; // si uno no existe, no puede haber arista
+        }
+
+        Nodo<Arista<E>> nodoActual = verticeOrigen.listaAdyacencia.getFirst(); // inicio de lista de adyacencia
+
+        while (nodoActual != null) {
+            Arista<E> arista = nodoActual.getData(); // obtenemos la arista
+            if (arista.getReferenciaDestino().equals(verticeDestino)) {
+                return true; // si encontramos coincidencia, existe la arista
+            }
+            nodoActual = nodoActual.getNext(); // avanzar al siguiente nodo
+        }
+
+        return false; // no se encontró ninguna arista hacia el destino
     }
 
     // ---------------- UTILITARIO ----------------
