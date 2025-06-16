@@ -17,7 +17,12 @@ public class GrafoDirigido<E> {
 
     // INSERTAR UN NUEVO VERTICE
     public void insertarVertice(E dato) {
+        if (buscarVertice(dato) != null) { // si el vértice ya existe, no se inserta
+            throw new RuntimeException("el vértice ya existe");
+        }
 
+        Vertice<E> nuevoVertice = new Vertice<>(dato); // creamos un nuevo vértice con el dato
+        listaVertices.insertLast(nuevoVertice); // lo agregamos al final de la lista de vértices
     }
 
     // ELIMINAR UN VÉRTICE Y SUS ARISTAS ASOCIADAS
@@ -32,8 +37,16 @@ public class GrafoDirigido<E> {
 
     // BUSCAR UN VÉRTICE POR SU DATO
     public Vertice<E> buscarVertice(E dato) {
-        
-        return null;
+        Nodo<Vertice<E>> nodoActual = listaVertices.getFirst(); // apunta al primer nodo de la lista
+
+        while (nodoActual != null) { // recorre mientras haya nodos
+            if (nodoActual.getData().getDato().equals(dato)) { // compara el dato del vértice con el dato buscado
+                return nodoActual.getData(); // si lo encuentra, retorna el vértice
+            }
+            nodoActual = nodoActual.getNext(); // avanza al siguiente nodo
+        }
+
+        return null; // si no lo encuentra, retorna null
     }
 
     // ---------------- MÉTODOS PARA ARISTAS ----------------
