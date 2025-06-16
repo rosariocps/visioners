@@ -37,6 +37,11 @@ public class Test {
         grafo.eliminarArista("Área de Empaque", "Despacho");
         System.out.println("\nDespués de eliminar la arista de Área de Empaque a Despacho:");
         System.out.println(grafo);
+
+        // ------------------ MODIFICAR DATO DE UN VÉRTICE ------------------
+        grafo.modificarVertice("Cámara de Frío", "Cuarto Congelado");
+        System.out.println("\nDespués de modificar el vértice 'Cámara de Frío' por 'Cuarto Congelado':");
+        System.out.println(grafo);
    
     }
 }
