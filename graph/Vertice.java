@@ -32,4 +32,9 @@ public class Vertice<E> {
         }
         return false; // Si no es un objeto Vertice, retorna falso
     }
+    
+    // Metodo toString que devuelve una representación en texto del vertice y su lista de adyacencia
+    public String toString() {
+        return dato + " --> " + listaAdyacencia.toString() + "\n"; // Concatena el dato del vertice con su lista de adyacencia
+    }
 }
