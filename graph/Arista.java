@@ -6,10 +6,15 @@ public class Arista<E> {
     private Vertice<E> referenciaDestino; // vértice de destino de la arista
     private double peso; // peso de la arista 
 
-    // CONSTRUCTOR
+    // CONSTRUCTORES
     public Arista(Vertice<E> referenciaDestino, double peso) {
         this.referenciaDestino = referenciaDestino; // asigna el parámetro al atributo de la referencia del destino
         this.peso = peso; // asigna el parámetro al atributo del peso
+    }
+
+    public Arista(Vertice<E> referenciaDestino) {
+        this.referenciaDestino = referenciaDestino;
+        this.peso = -1;
     }
 
     // GETTERS    

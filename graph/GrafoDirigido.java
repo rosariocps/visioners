@@ -50,7 +50,7 @@ public class GrafoDirigido<E> {
         }
 
         Nodo<Arista<E>> nodoActual = verticeOrigen.listaAdyacencia.getFirst();
-        
+
         while (nodoActual != null) {
             Arista<E> arista = nodoActual.getData();
             if (arista.getReferenciaDestino().equals(verticeDestino)) {
@@ -66,7 +66,20 @@ public class GrafoDirigido<E> {
 
     // ELIMINAR UNA ARISTA DIRIGIDA
     public void eliminarArista(E origen, E destino) {
-        
+        // Busca los vértices de origen y destino en la lista de vértices
+        Vertice<E> verticeOrigen = buscarVertice(origen);
+        Vertice<E> verticeDestino = buscarVertice(destino);
+
+        if (verticeOrigen == null || verticeDestino == null) { // verifica que ambos vértices existan
+            // lanza una excepción si falta alguno
+            throw new RuntimeException("uno o ambos vértices no existen");
+        }
+
+        boolean eliminado = verticeOrigen.listaAdyacencia.removeNodo(new Arista<>(verticeDestino));
+
+        if (!eliminado) {
+            throw new RuntimeException("la arista no existe");
+        }
     }
 
     // MODIFICAR EL PESO DE UNA ARISTA EXISTENTE
