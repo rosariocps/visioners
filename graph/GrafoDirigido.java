@@ -1,6 +1,7 @@
 package graph;
 
 import linkedlist.ListaEnlazada;
+import linkedlist.Nodo;
 
 public class GrafoDirigido<E> {
 
@@ -44,12 +45,13 @@ public class GrafoDirigido<E> {
         Vertice<E> verticeDestino = buscarVertice(destino);
 
         if (verticeOrigen == null || verticeDestino == null) { // verifica que ambos vértices existan
-             // lanza una excepción si falta alguno
+            // lanza una excepción si falta alguno
             throw new RuntimeException("Uno o ambos vértices no existen");
         }
 
         Arista<E> nuevaArista = new Arista<>(verticeDestino, peso); // crea la arista desde origen hacia destino
-        verticeOrigen.listaAdyacencia.insertLast(nuevaArista); // agrega la arista a la lista del vértice origen
+        // agrega la arista a la lista de adyacencia del vértice origen
+        verticeOrigen.listaAdyacencia.insertLast(nuevaArista); // se utiliza el método inserLast de ListaEnlazada
     }
 
     // ELIMINAR UNA ARISTA DIRIGIDA
@@ -59,7 +61,28 @@ public class GrafoDirigido<E> {
 
     // MODIFICAR EL PESO DE UNA ARISTA EXISTENTE
     public void modificarPesoArista(E origen, E destino, int nuevoPeso) {
-        
+        // Busca los vértices de origen y destino en la lista de vértices
+        Vertice<E> verticeOrigen = buscarVertice(origen);
+        Vertice<E> verticeDestino = buscarVertice(destino);
+
+        if (verticeOrigen == null || verticeDestino == null) { // verifica que ambos vértices existan
+            // lanza una excepción si falta alguno
+            throw new RuntimeException("uno o ambos vértices no existen");
+        }
+
+        // Se crea un nuevo nodo que apunte al primer vertice de destino que aparece en la lista de Adyacencia
+        Nodo<Arista<E>> nodoActual = verticeOrigen.listaAdyacencia.getFirst();
+
+        while (nodoActual != null) {
+            Arista<E> arista = nodoActual.getData();
+            if (arista.getReferenciaDestino().equals(verticeDestino)) {
+                arista.setPeso(nuevoPeso);
+                return;
+            }
+            nodoActual = nodoActual.getNext();
+        }
+
+        throw new RuntimeException("la arista no existe");   
     }
 
     // VERIFICAR SI EXISTE UNA ARISTA ENTRE DOS VERTICES
