@@ -25,6 +25,7 @@ public class Vertice<E> {
     }
     
     // Metodo equals, compara si dos vertices son iguales basandose en su dato
+    @Override
     public boolean equals(Object o) {
         if (o instanceof Vertice<?>) { // Verifica si el objeto recibido es una instancia de Vertice
             Vertice<E> v = (Vertice<E>) o; // Compara los datos de ambos vertices
@@ -34,6 +35,7 @@ public class Vertice<E> {
     }
     
     // Metodo toString que devuelve una representación en texto del vertice y su lista de adyacencia
+    @Override
     public String toString() {
         return dato + " --> " + listaAdyacencia.toString() + "\n"; // Concatena el dato del vertice con su lista de adyacencia
     }
