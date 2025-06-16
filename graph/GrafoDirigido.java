@@ -49,8 +49,24 @@ public class GrafoDirigido<E> {
 
     // MODIFICAR EL DATO DE UN VÉRTICE
     public void modificarVertice(E datoAntiguo, E datoNuevo) {
-        
+
+        // buscamos el vertice que tiene el dato antiguo
+        Vertice<E> vertice = buscarVertice(datoAntiguo);
+
+        // si no se encuentra ese vertice, mostramos error
+        if (vertice == null) {
+            throw new RuntimeException("el vértice no existe");
+        }
+
+        // verificamos si ya existe otro vertice con el dato nuevo
+        if (buscarVertice(datoNuevo) != null) {
+            throw new RuntimeException("ya existe un vértice con el nuevo dato");
+        }
+
+        // si todo está bien, cambiamos el dato del vertice
+        vertice.setDato(datoNuevo);
     }
+
 
     // BUSCAR UN VÉRTICE POR SU DATO
     public Vertice<E> buscarVertice(E dato) {
