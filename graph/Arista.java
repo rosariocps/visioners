@@ -21,6 +21,11 @@ public class Arista<E> {
         return peso;
     }
 
+    //SET
+    public void setPeso(double peso){ // modifica el peso de una arista
+        this.peso = peso;
+    }
+
     //MÉTODO QUE INDICA SI ESTA ARISTA ES IGUAL A OTRA
     @Override
     public boolean equals(Object otraArista){

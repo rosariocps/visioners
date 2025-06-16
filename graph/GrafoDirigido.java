@@ -39,7 +39,17 @@ public class GrafoDirigido<E> {
 
     // INSERTAR UNA ARISTA DIRIGIDA CON PESO
     public void insertarArista(E origen, E destino, int peso) {
-        
+        // Busca los vértices de origen y destino en la lista de vértices
+        Vertice<E> verticeOrigen = buscarVertice(origen);
+        Vertice<E> verticeDestino = buscarVertice(destino);
+
+        if (verticeOrigen == null || verticeDestino == null) { // verifica que ambos vértices existan
+             // lanza una excepción si falta alguno
+            throw new RuntimeException("Uno o ambos vértices no existen");
+        }
+
+        Arista<E> nuevaArista = new Arista<>(verticeDestino, peso); // crea la arista desde origen hacia destino
+        verticeOrigen.listaAdyacencia.insertLast(nuevaArista); // agrega la arista a la lista del vértice origen
     }
 
     // ELIMINAR UNA ARISTA DIRIGIDA
