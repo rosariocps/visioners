@@ -23,4 +23,13 @@ public class Vertice<E> {
     public ListaEnlazada<Arista<E>> getListaAdyacencia() {
         return listaAdyacencia; // Retorna la lista de aristas que representan las conexiones de este vertice
     }
+    
+    // Metodo equals, compara si dos vertices son iguales basandose en su dato
+    public boolean equals(Object o) {
+        if (o instanceof Vertice<?>) { // Verifica si el objeto recibido es una instancia de Vertice
+            Vertice<E> v = (Vertice<E>) o; // Compara los datos de ambos vertices
+            return this.dato.equals(v.dato);
+        }
+        return false; // Si no es un objeto Vertice, retorna falso
+    }
 }
