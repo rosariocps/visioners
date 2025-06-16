@@ -2,7 +2,7 @@ package app;
 
 import graph.GrafoDirigido;
 
-public class test {
+public class Test {
     public static void main(String[] args) {
         GrafoDirigido<String> grafo = new GrafoDirigido<>();
 
