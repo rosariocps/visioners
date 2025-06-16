@@ -42,6 +42,11 @@ public class Test {
         grafo.modificarVertice("Cámara de Frío", "Cuarto Congelado");
         System.out.println("\nDespués de modificar el vértice 'Cámara de Frío' por 'Cuarto Congelado':");
         System.out.println(grafo);
+
+        // ------------------ ELIMINAR UN VÉRTICE ------------------
+        grafo.eliminarVertice("Zona de Almacenamiento");
+        System.out.println("\nDespués de eliminar el vértice 'Zona de Almacenamiento':");
+        System.out.println(grafo);
    
     }
 }
