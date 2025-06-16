@@ -49,6 +49,16 @@ public class GrafoDirigido<E> {
             throw new RuntimeException("Uno o ambos vértices no existen");
         }
 
+        Nodo<Arista<E>> nodoActual = verticeOrigen.listaAdyacencia.getFirst();
+        
+        while (nodoActual != null) {
+            Arista<E> arista = nodoActual.getData();
+            if (arista.getReferenciaDestino().equals(verticeDestino)) {
+                throw new RuntimeException("ya existe una arista entre estos vértices");
+            }
+            nodoActual = nodoActual.getNext();
+        }
+
         Arista<E> nuevaArista = new Arista<>(verticeDestino, peso); // crea la arista desde origen hacia destino
         // agrega la arista a la lista de adyacencia del vértice origen
         verticeOrigen.listaAdyacencia.insertLast(nuevaArista); // se utiliza el método inserLast de ListaEnlazada
