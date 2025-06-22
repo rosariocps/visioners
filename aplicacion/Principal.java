@@ -1,60 +1,48 @@
-package aplicacion;
+package aplicacion; // indica que esta clase pertenece al paquete aplicacion
 
-import estructuras.GrafoAlmacen;
-import simulacion.SimuladorInventario;
-import visualizacion.VisualizadorTexto;
-import modelos.ArbolBProducto;
-import modelos.Producto;
+import estructuras.GrafoAlmacen; // importa la clase que modela el grafo del almacen
+import modelos.ArbolBProducto; // importa la clase que simula un arbol b+ sencillo
+import modelos.Producto; // importa la clase producto con codigo y nombre
+import simulacion.SimuladorInventario; // importa la clase que simula escenarios
+import visualizacion.VisualizadorTexto; // importa la clase que muestra info en consola
 
-/**
- * Clase principal que une todas las partes del sistema:
- * - construye el grafo de ubicaciones
- * - crea árboles B+ de productos por ubicación
- * - muestra el estado inicial y final
- * - ejecuta simulaciones de inventario
- */
-public class Principal {
-    public static void main(String[] args) {
-        // 1. Crear grafo con 5 ubicaciones
-        GrafoAlmacen grafo = new GrafoAlmacen(5);
-        grafo.agregarUbicacion("Recepción");
-        grafo.agregarUbicacion("Pasillo 1");
-        grafo.agregarUbicacion("Estante A");
-        grafo.agregarUbicacion("Estante B");
-        grafo.agregarUbicacion("Zona de Carga");
+public class Principal { // declara la clase principal
+    public static void main(String[] args) { // metodo principal, punto de entrada
+        GrafoAlmacen grafo = new GrafoAlmacen(); // crea un grafo vacio
+        grafo.agregarUbicacion("recepcion"); // agrega nodo "recepcion"
+        grafo.agregarUbicacion("pasillo 1"); // agrega nodo "pasillo 1"
+        grafo.agregarUbicacion("estante a"); // agrega nodo "estante a"
+        grafo.agregarUbicacion("estante b"); // agrega nodo "estante b"
+        grafo.agregarUbicacion("zona carga"); // agrega nodo "zona carga"
 
-        // 2. Conectar ubicaciones con rutas (peso = distancia o tiempo)
-        grafo.agregarRuta(0, 1, 5);
-        grafo.agregarRuta(1, 2, 3);
-        grafo.agregarRuta(2, 3, 2);
-        grafo.agregarRuta(3, 4, 4);
+        grafo.agregarRuta(0, 1, 5); // crea ruta recepcion→pasillo1 con peso 5
+        grafo.agregarRuta(1, 2, 3); // crea ruta pasillo1→estanteA con peso 3
+        grafo.agregarRuta(2, 3, 2); // crea ruta estanteA→estanteB con peso 2
+        grafo.agregarRuta(3, 4, 4); // crea ruta estanteB→zonaCarga con peso 4
 
-        // 3. Crear un árbol B+ para cada ubicación (capacidad 10)
-        ArbolBProducto[] arboles = new ArbolBProducto[grafo.cantidadNodos()];
-        for (int i = 0; i < arboles.length; i++) {
-            arboles[i] = new ArbolBProducto(10);
+        int n = grafo.cantidadNodos(); // obtiene numero de ubicaciones
+        ArbolBProducto[] arboles = new ArbolBProducto[n]; // crea arreglo de arboles
+        for (int i = 0; i < n; i++) { // para cada ubicacion
+            arboles[i] = new ArbolBProducto(10); // crea un arbol b+ con capacidad 10
         }
 
-        // 4. Insertar algunos productos inicialmente
-        arboles[2].insertarProducto(new Producto("P001", "Tornillos"));
-        arboles[3].insertarProducto(new Producto("P002", "Tuercas"));
+        arboles[2].insertarProducto(new Producto("p001", "tornillos")); // inserta producto en estante a
+        arboles[3].insertarProducto(new Producto("p002", "tuercas")); // inserta producto en estante b
 
-        // 5. Mostrar estado inicial
-        VisualizadorTexto.mostrarUbicaciones(grafo);
-        VisualizadorTexto.mostrarRutas(grafo);
-        VisualizadorTexto.mostrarProductosPorUbicacion(arboles);
+        VisualizadorTexto.mostrarUbicaciones(grafo); // muestra todas las ubicaciones
+        VisualizadorTexto.mostrarRutas(grafo); // muestra todas las rutas con sus pesos
+        VisualizadorTexto.mostrarProductosPorUbicacion(arboles); // muestra productos iniciales
 
-        // 6. Crear simulador y ejecutar escenarios
-        SimuladorInventario simulador = new SimuladorInventario(grafo, arboles);
+        SimuladorInventario simulador = new SimuladorInventario(grafo, arboles); // crea el simulador
 
-        simulador.cerrarRuta(1, 2);                                // cierra conexión Pasillo 1 → Estante A
-        simulador.simularAdicionProducto(2, new Producto("P003", "Arandelas"));  // añade producto en Estante A
-        simulador.simularEliminacionProducto(3, "P002");           // elimina Tuercas de Estante B
-        simulador.recalcularRutasOptimales(0);                     // recalcula distancias desde Recepción
+        simulador.cerrarRuta(1, 2); // simula cierre de pasillo1→estanteA
+        simulador.simularAdicionProducto(2, new Producto("p003", "arandelas")); // añade arandelas
+        simulador.simularEliminacionProducto(3, "p002"); // elimina tuercas
+        simulador.simularCrecimientoInventario(4, new Producto("p004", "clavos")); // simula crecimiento
+        simulador.recalcularRutas(0); // recalcula rutas desde recepcion
 
-        // 7. Mostrar estado final tras simulaciones
-        System.out.println("\n=== Estado final tras simulaciones ===");
-        VisualizadorTexto.mostrarRutas(grafo);
-        VisualizadorTexto.mostrarProductosPorUbicacion(arboles);
+        System.out.println(); // imprime linea vacia de separacion
+        VisualizadorTexto.mostrarRutas(grafo); // muestra rutas tras simulaciones
+        VisualizadorTexto.mostrarProductosPorUbicacion(arboles); // muestra productos tras simulaciones
     }
 }
