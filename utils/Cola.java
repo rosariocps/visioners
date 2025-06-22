@@ -1,76 +1,50 @@
-package utils;
+package utils; // indica que esta clase esta en el paquete utils
 
-/**
- * Cola simple de enteros basada en arreglo circular.
- */
+// clase que implementa una cola de enteros con arreglo circular
 public class Cola {
-    private int[] datos;   // almacenamiento de la cola
-    private int frente;    // indice del primer elemento
-    private int fin;       // indice donde encolar el siguiente
-    private int tamano;    // numero de elementos actualmente en la cola
+    private int[] datos; // arreglo donde se guardan los valores
+    private int frente;  // indice del primer elemento en la cola
+    private int fin;     // indice donde se agregara el siguiente elemento
+    private int tamano;  // numero de elementos actualmente en la cola
 
-    /**
-     * Constructor: crea una cola con capacidad fija.
-     * @param capacidad maxima de la cola
-     */
-    public Cola(int capacidad) {
-        datos  = new int[capacidad];
-        frente = 0;
-        fin     = 0;
-        tamano  = 0;
+    public Cola(int capacidad) { // constructor que recibe la capacidad maxima
+        datos = new int[capacidad]; // crea el arreglo con la capacidad dada
+        frente = 0;                 // inicializa el indice frente en cero
+        fin = 0;                    // inicializa el indice fin en cero
+        tamano = 0;                 // inicializa el tamano en cero
     }
 
-    /**
-     * Agrega un valor al final de la cola.
-     * @param valor entero a encolar
-     */
-    public void encolar(int valor) {
-        if (tamano < datos.length) {
-            datos[fin] = valor;
-            fin = (fin + 1) % datos.length;
-            tamano++;
+    public void encolar(int valor) { // metodo para agregar un elemento
+        if (tamano < datos.length) { // verifica que la cola no este llena
+            datos[fin] = valor;      // coloca el valor en la posicion fin
+            fin = (fin + 1) % datos.length; // avanza fin circularmente
+            tamano++;                // aumenta el contador de elementos
         } else {
-            System.out.println("Cola llena. No se puede encolar " + valor);
+            System.out.println("cola llena, no se puede encolar " + valor); // mensaje si esta llena
         }
     }
 
-    /**
-     * Quita y devuelve el primer valor de la cola.
-     * @return valor desencolado, o -1 si la cola esta vacia
-     */
-    public int desencolar() {
-        if (tamano > 0) {
-            int valor = datos[frente];
-            frente = (frente + 1) % datos.length;
-            tamano--;
-            return valor;
+    public int desencolar() { // metodo para remover y retornar el primer elemento
+        if (tamano > 0) {       // verifica que la cola no este vacia
+            int valor = datos[frente]; // obtiene el valor en la posicion frente
+            frente = (frente + 1) % datos.length; // avanza frente circularmente
+            tamano--;          // decrementa el contador de elementos
+            return valor;      // retorna el valor desencolado
         } else {
-            System.out.println("Cola vacia. No hay nada que desencolar.");
-            return -1;
+            System.out.println("cola vacia, no hay nada que desencolar"); // mensaje si esta vacia
+            return -1;         // retorna -1 como indicador de error
         }
     }
 
-    /**
-     * Indica si la cola esta vacia.
-     * @return true si no tiene elementos
-     */
-    public boolean estaVacia() {
-        return tamano == 0;
+    public boolean estaVacia() { // metodo que indica si la cola esta vacia
+        return tamano == 0;       // true si tamano es cero
     }
 
-    /**
-     * Indica si la cola esta llena.
-     * @return true si alcanzo su capacidad maxima
-     */
-    public boolean estaLlena() {
-        return tamano == datos.length;
+    public boolean estaLlena() { // metodo que indica si la cola esta llena
+        return tamano == datos.length; // true si tamano igual a capacidad
     }
 
-    /**
-     * Devuelve el numero de elementos en la cola.
-     * @return cantidad actual de elementos
-     */
-    public int tamano() {
-        return tamano;
+    public int tamano() { // metodo que retorna el numero de elementos actuales
+        return tamano;    // devuelve el contador tamano
     }
 }
