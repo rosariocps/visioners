@@ -1,20 +1,20 @@
 package simulacion; // indica que esta clase esta en el paquete simulacion
 
-import estructuras.GrafoAlmacen;    // importa la clase que modela el grafo del almacen
-import estructuras.AlgoritmosGrafo; // importa los algoritmos de grafo (bfs, dijkstra, etc.)
-import modelos.ArbolBProducto;      // importa la clase que simula un arbol b+ sencillo
-import modelos.Producto;            // importa la clase producto
+import estructuras.AlgoritmosGrafo; // importa la clase que modela el grafo del almacen
+import estructuras.GrafoAlmacen; // importa los algoritmos de grafo (bfs, dijkstra, etc.)
+import modelos.ArbolBProducto; // importa la clase que simula un arbol b+ sencillo
+import modelos.Producto; // importa la clase producto
 
 /**
  * clase que simula diferentes escenarios de inventario en el almacen
  */
 public class SimuladorInventario { 
-    private GrafoAlmacen grafo;        // grafo que contiene ubicaciones y rutas
-    private ArbolBProducto[] arboles;  // arreglo de arboles b+ por cada ubicacion
+    private GrafoAlmacen grafo; // grafo que contiene ubicaciones y rutas
+    private ArbolBProducto[] arboles; // arreglo de arboles b+ por cada ubicacion
 
     public SimuladorInventario(GrafoAlmacen grafo, ArbolBProducto[] arboles) {
-        this.grafo   = grafo;          // asigna el grafo recibido al atributo
-        this.arboles = arboles;        // asigna el arreglo de arboles al atributo
+        this.grafo   = grafo; // asigna el grafo recibido al atributo
+        this.arboles = arboles; // asigna el arreglo de arboles al atributo
     }
 
     /** cierra una ruta entre dos nodos (simula bloqueo de pasillo) */
