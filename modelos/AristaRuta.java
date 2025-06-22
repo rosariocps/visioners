@@ -1,29 +1,26 @@
-package modelos;
+package modelos; // indica que esta clase esta en el paquete modelos
 
-// esta clase representa una ruta o camino entre dos ubicaciones
+// clase que representa una ruta entre dos nodos con un peso
 public class AristaRuta {
-    private int origen;   // nodo de donde sale
-    private int destino;  // nodo al que llega
-    private int peso;     // valor de la ruta (puede ser distancia o tiempo)
+    private int origen;   // indice del nodo origen
+    private int destino;  // indice del nodo destino
+    private int peso;     // valor asociado a la ruta
 
-    public AristaRuta(int origen, int destino, int peso) {
-        this.origen = origen;
-        this.destino = destino;
-        this.peso = peso;
+    public AristaRuta(int origen, int destino, int peso) { // constructor con parametros
+        this.origen = origen;     // asigna el indice de origen
+        this.destino = destino;   // asigna el indice de destino
+        this.peso = peso;         // asigna el peso de la ruta
     }
 
-    // devuelve el nodo origen
-    public int obtenerOrigen() {
-        return origen;
+    public int obtenerOrigen() {  // retorna el nodo origen
+        return origen;            // devuelve el valor de origen
     }
 
-    // devuelve el nodo destino
-    public int obtenerDestino() {
-        return destino;
+    public int obtenerDestino() { // retorna el nodo destino
+        return destino;           // devuelve el valor de destino
     }
 
-    // devuelve el valor de la ruta
-    public int obtenerPeso() {
-        return peso;
+    public int obtenerPeso() {    // retorna el peso de la ruta
+        return peso;              // devuelve el valor de peso
     }
 }
