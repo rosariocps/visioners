@@ -1,22 +1,20 @@
-package modelos;
+package modelos; // indica que esta clase esta en el paquete modelos
 
-// esta clase representa un punto del almacen como un nodo del grafo
+// clase que modela una ubicacion del almacen como un nodo
 public class NodoUbicacion {
-    private String nombre; // nombre como "Estante A" o "Pasillo 1"
-    private int indice;    // posicion del nodo en el grafo (numerico)
+    private String nombre; // nombre descriptivo de la ubicacion
+    private int indice;    // indice numerico que identifica el nodo
 
-    public NodoUbicacion(String nombre, int indice) {
-        this.nombre = nombre;
-        this.indice = indice;
+    public NodoUbicacion(String nombre, int indice) { // constructor con parametros
+        this.nombre = nombre;  // asigna el nombre de la ubicacion
+        this.indice = indice;  // asigna el indice numerico
     }
 
-    // devuelve el nombre del nodo
-    public String obtenerNombre() {
-        return nombre;
+    public String obtenerNombre() { // retorna el nombre de la ubicacion
+        return nombre;              // devuelve la propiedad nombre
     }
 
-    // devuelve el indice numerico del nodo
-    public int obtenerIndice() {
-        return indice;
+    public int obtenerIndice() {    // retorna el indice del nodo
+        return indice;              // devuelve la propiedad indice
     }
 }
