@@ -1,17 +1,16 @@
-package modelos;
+package modelos; // indica que esta clase esta en el paquete modelos
 
-// esta clase representa un producto en el almacen
+// clase que representa un producto en el almacen
 public class Producto {
-    public String codigo; // codigo unico del producto
-    public String nombre; // nombre del producto
+    public String codigo; // codigo unico que identifica el producto
+    public String nombre; // nombre descriptivo del producto
 
-    public Producto(String codigo, String nombre) {
-        this.codigo = codigo;
-        this.nombre = nombre;
+    public Producto(String codigo, String nombre) { // constructor con parametros
+        this.codigo = codigo;   // asigna el codigo al atributo
+        this.nombre = nombre;   // asigna el nombre al atributo
     }
 
-    // muestra los datos del producto
-    public void mostrarDatos() {
-        System.out.println("Producto: " + nombre + " | Código: " + codigo);
+    public void mostrarDatos() { // imprime en consola los datos del producto
+        System.out.println("producto: " + nombre + " | codigo: " + codigo); // muestra nombre y codigo
     }
 }
