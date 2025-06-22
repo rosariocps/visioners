@@ -1,68 +1,44 @@
-package visualizacion;
+package visualizacion; // indica que esta clase pertenece al paquete visualizacion
 
-import modelos.NodoUbicacion;
-import modelos.Producto;
-import modelos.ArbolBProducto;
-import estructuras.GrafoAlmacen;
-import estructuras.MatrizAdyacencia;
+import modelos.NodoUbicacion; // importa la clase nodo con nombre e indice
+import estructuras.GrafoAlmacen; // importa la clase que modela el grafo
+import modelos.ArbolBProducto; // importa la clase que simula un arbol b+
+import modelos.Producto; // importa la clase producto (para su metodo mostrarDatos)
+import modelos.AristaRuta; // importa la clase que contiene origen, destino y peso
 
-/**
- * Clase para mostrar en consola información del grafo,
- * las rutas y los productos en cada ubicación.
- */
-public class VisualizadorTexto {
+public class VisualizadorTexto { // declara la clase de visualizacion
 
-    /**
-     * Muestra todas las ubicaciones (nodos) del almacén.
-     * @param grafo el grafo que contiene los nodos
-     */
-    public static void mostrarUbicaciones(GrafoAlmacen grafo) {
-        System.out.println("=== Ubicaciones del almacén ===");
-        for (NodoUbicacion nodo : grafo.obtenerNodos()) {
-            if (nodo != null) {
-                System.out.printf("• [%d] %s%n",
-                    nodo.obtenerIndice(),
-                    nodo.obtenerNombre());
+    public static void mostrarUbicaciones(GrafoAlmacen grafo) { // muestra todos los nodos
+        System.out.println("=== ubicaciones del almacen ==="); // titulo de seccion
+        for (NodoUbicacion nodo : grafo.obtenerNodos()) { // recorre cada nodo
+            if (nodo != null) { // si el nodo existe
+                System.out.println( // imprime indice y nombre
+                    "• [" + nodo.obtenerIndice() + "] " + nodo.obtenerNombre()
+                );
             }
         }
-        System.out.println();
+        System.out.println(); // linea vacia para separacion
     }
 
-    /**
-     * Muestra todas las rutas dirigidas con su peso
-     * recorriendo la matriz de adyacencia.
-     * @param grafo el grafo con las conexiones
-     */
-    public static void mostrarRutas(GrafoAlmacen grafo) {
-        System.out.println("=== Rutas (origen → destino : peso) ===");
-        MatrizAdyacencia m = grafo.obtenerConexiones();
-        int n = grafo.cantidadNodos();
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                int peso = m.obtenerPeso(i, j);
-                if (peso > 0) {
-                    System.out.printf("%d → %d : %d%n", i, j, peso);
-                }
+    public static void mostrarRutas(GrafoAlmacen grafo) { // muestra todas las rutas
+        System.out.println("=== rutas (origen -> destino : peso) ==="); // titulo
+        int n = grafo.cantidadNodos(); // obtiene numero de nodos
+        for (int i = 0; i < n; i++) { // recorre cada nodo origen
+            for (AristaRuta ar : grafo.obtenerRutas(i)) { // por cada ruta saliente
+                System.out.println( // imprime origen, destino y peso
+                    i + " -> " + ar.obtenerDestino() + " : " + ar.obtenerPeso()
+                );
             }
         }
-        System.out.println();
+        System.out.println(); // linea vacia para separacion
     }
 
-    /**
-     * Muestra los productos almacenados en cada árbol B+,
-     * según la ubicación indicada por el índice.
-     * @param arboles arreglo de árboles B+ por ubicación
-     */
-    public static void mostrarProductosPorUbicacion(ArbolBProducto[] arboles) {
-        System.out.println("=== Productos por ubicación ===");
-        for (int i = 0; i < arboles.length; i++) {
-            System.out.println("Ubicación " + i + ":");
-            if (arboles[i] != null) {
-                arboles[i].mostrarProductos();
-            } else {
-                System.out.println("  (sin árbol de productos)");
-            }
+    public static void mostrarProductosPorUbicacion(ArbolBProducto[] arboles) { // muestra productos
+        System.out.println("=== productos por ubicacion ==="); // titulo
+        for (int i = 0; i < arboles.length; i++) { // recorre cada arbol
+            System.out.println("ubicacion " + i + ":"); // imprime indice de ubicacion
+            arboles[i].mostrarProductos(); // llama al metodo que imprime cada producto
         }
-        System.out.println();
+        System.out.println(); // linea vacia al terminar
     }
 }
