@@ -1,60 +1,71 @@
 package estructuras;
 
 import modelos.NodoUbicacion;
+import modelos.AristaRuta;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Clase que modela el grafo del almacén usando una matriz de adyacencia.
+ * Grafo de ubicaciones usando lista de adyacencia.
+ * Incluye métodos para agregar, eliminar y modificar.
  */
 public class GrafoAlmacen {
-    private NodoUbicacion[] nodos;       // arreglo de ubicaciones
-    private MatrizAdyacencia conexiones; // matriz de rutas
-    private int totalNodos;              // cuántas ubicaciones hay
+    private List<NodoUbicacion> nodos;
+    private ListaAdyacencia adyacencia;
 
-    /**
-     * Constructor: crea un grafo con capacidad para n nodos.
-     * @param capacidad número máximo de ubicaciones
-     */
-    public GrafoAlmacen(int capacidad) {
-        nodos = new NodoUbicacion[capacidad];
-        conexiones = new MatrizAdyacencia(capacidad);
-        totalNodos = 0;
+    public GrafoAlmacen() {
+        nodos      = new ArrayList<>();
+        adyacencia = new ListaAdyacencia();
+    }
+
+    /** Agrega una nueva ubicación (nodo) */
+    public void agregarUbicacion(String nombre) {
+        nodos.add(new NodoUbicacion(nombre, nodos.size()));
+        adyacencia.agregarNodo();
+    }
+
+    /** Agrega o actualiza una ruta dirigida con peso */
+    public void agregarRuta(int origen, int destino, int peso) {
+        adyacencia.agregarRuta(origen, destino, peso);
+    }
+
+    /** Elimina la ruta origen→destino */
+    public void eliminarRuta(int origen, int destino) {
+        adyacencia.eliminarRuta(origen, destino);
+    }
+
+    /** Cambia el peso de una ruta existente */
+    public void modificarRuta(int origen, int destino, int nuevoPeso) {
+        adyacencia.modificarRuta(origen, destino, nuevoPeso);
     }
 
     /**
-     * Agrega una nueva ubicación (nodo) al grafo.
-     * @param nombre descripción de la ubicación
+     * Elimina un nodo entero:
+     * - quita sus rutas salientes
+     * - quita todas las rutas que apunten a él
      */
-    public void agregarUbicacion(String nombre) {
-        if (totalNodos < nodos.length) {
-            nodos[totalNodos] = new NodoUbicacion(nombre, totalNodos);
-            totalNodos++;
-        } else {
-            System.out.println("No cabe más ubicaciones.");
+    public void eliminarNodo(int indice) {
+        if (indice < adyacencia.cantidadNodos()) {
+            adyacencia.obtenerRutas(indice).clear();
+            for (int i = 0; i < adyacencia.cantidadNodos(); i++) {
+                adyacencia.eliminarRuta(i, indice);
+            }
+            // Nota: el objeto NodoUbicacion queda en la lista; podrías marcarlo null.
         }
     }
 
-    /**
-     * Agrega una ruta dirigida entre dos ubicaciones con un peso.
-     * @param origen  índice del nodo origen
-     * @param destino índice del nodo destino
-     * @param peso    valor de la ruta (distancia o tiempo)
-     */
-    public void agregarRuta(int origen, int destino, int peso) {
-        conexiones.agregarRuta(origen, destino, peso);
-    }
-
-    /** Devuelve el arreglo de nodos (ubicaciones). */
-    public NodoUbicacion[] obtenerNodos() {
+    /** Lista de todas las ubicaciones */
+    public List<NodoUbicacion> obtenerNodos() {
         return nodos;
     }
 
-    /** Devuelve la matriz de adyacencia con las rutas. */
-    public MatrizAdyacencia obtenerConexiones() {
-        return conexiones;
+    /** Rutas salientes de un nodo */
+    public List<AristaRuta> obtenerRutas(int origen) {
+        return adyacencia.obtenerRutas(origen);
     }
 
-    /** Número actual de ubicaciones en el grafo. */
+    /** Cuántos nodos hay */
     public int cantidadNodos() {
-        return totalNodos;
+        return nodos.size();
     }
 }
