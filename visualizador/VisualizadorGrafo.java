@@ -1,3 +1,5 @@
+package visualizador;
+
 import org.graphstream.graph.*;
 import org.graphstream.graph.implementations.*;
 
