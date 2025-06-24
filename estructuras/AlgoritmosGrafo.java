@@ -1,4 +1,4 @@
-package estructuras; // especifica que esta clase pertenece al paquete estructuras
+package estructuras; 
 
 import modelos.AristaRuta; // importa la clase arista que contiene origen, destino y peso
 import java.util.*; // importa colecciones como listas, pilas y colas

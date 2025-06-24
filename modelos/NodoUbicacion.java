@@ -1,5 +1,4 @@
-package modelos; // indica que esta clase esta en el paquete modelos
-
+package modelos; 
 // clase que modela una ubicacion del almacen como un nodo
 public class NodoUbicacion {
     private String nombre; // nombre descriptivo de la ubicacion

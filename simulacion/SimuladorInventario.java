@@ -1,4 +1,4 @@
-package simulacion; // indica que esta clase esta en el paquete simulacion
+package simulacion; 
 
 import estructuras.AlgoritmosGrafo; // importa la clase que modela el grafo del almacen
 import estructuras.GrafoAlmacen; // importa los algoritmos de grafo (bfs, dijkstra, etc.)

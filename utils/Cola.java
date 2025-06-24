@@ -1,4 +1,4 @@
-package utils; // indica que esta clase esta en el paquete utils
+package utils; 
 
 // clase que implementa una cola de enteros con arreglo circular
 public class Cola {

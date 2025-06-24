@@ -1,4 +1,4 @@
-package modelos; // indica que esta clase esta en el paquete modelos
+package modelos; 
 
 // clase que simula un arbol b+ simple usando arreglo
 public class ArbolBProducto {

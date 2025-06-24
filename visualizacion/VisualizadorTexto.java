@@ -1,4 +1,4 @@
-package visualizacion; // indica que esta clase pertenece al paquete visualizacion
+package visualizacion; 
 
 import modelos.NodoUbicacion; // importa la clase nodo con nombre e indice
 import estructuras.GrafoAlmacen; // importa la clase que modela el grafo

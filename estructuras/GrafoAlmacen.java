@@ -1,4 +1,4 @@
-package estructuras; // indica que esta clase esta en el paquete estructuras
+package estructuras; 
 
 import modelos.NodoUbicacion; // importa la clase nodo que guarda nombre e indice
 import modelos.AristaRuta; // importa la clase arista con origen, destino y peso

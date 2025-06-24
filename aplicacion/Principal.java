@@ -1,4 +1,4 @@
-package aplicacion; // indica que esta clase pertenece al paquete aplicacion
+package aplicacion; 
 
 import estructuras.GrafoAlmacen; // importa la clase que modela el grafo del almacen
 import modelos.ArbolBProducto; // importa la clase que simula un arbol b+ sencillo

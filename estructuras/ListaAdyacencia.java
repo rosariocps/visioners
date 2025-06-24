@@ -1,4 +1,4 @@
-package estructuras; // especifica que esta clase esta en el paquete estructuras
+package estructuras; 
 
 import modelos.AristaRuta; // importa la clase arista con origen, destino y peso
 import java.util.ArrayList; // importa la implementacion de lista dinamica

@@ -1,4 +1,4 @@
-package modelos; // indica que esta clase esta en el paquete modelos
+package modelos; 
 
 // clase que representa un producto en el almacen
 public class Producto {
