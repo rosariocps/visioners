@@ -16,12 +16,12 @@ public class ListaAdyacencia {
         lista = new ArrayList<>(); //crea la lista principal vacía para empezar a añadir nodos
     }
 
-    // añade un nuevo nodo (ubicacion) al grafo //
+    // añade un nuevo nodo (ubicacion) al grafo 
     public void agregarNodo() {
         lista.add(new ArrayList<>()); // añade una lista vacia para el nuevo nodo
     }
 
-    // añade una ruta dirigida con peso //
+    // añade una ruta dirigida con peso 
     public void agregarRuta(int origen, int destino, int peso) {
         // verifica que origen y destino existan en el grafo
         if (origen < lista.size() && destino < lista.size()) {
@@ -30,32 +30,35 @@ public class ListaAdyacencia {
         }
     }
 
-    // elimina la ruta origen->destino si existe //
+    // elimina la ruta origen->destino si existe 
     public void eliminarRuta(int origen, int destino) {
         // solo opera si el nodo origen existe
         if (origen < lista.size()) {
             // remueve cualquier arista cuyo destino coincida
+            //removeIf es un método de Java 8 en la interfaz Collection
+            //recorre la coleccion y que permite eliminar elementos que cumplen una condicion
+            //ar -> ar.obtenerDestino() == destino (lambda): para cada AristaRuta ar devuelve true si su destino coincide con destino, indicando que debe eliminarse
             lista.get(origen).removeIf(ar -> ar.obtenerDestino() == destino);
         }
     }
 
-    // modifica (o define de nuevo) el peso de la ruta //
+    // modifica el peso de la ruta 
     public void modificarRuta(int origen, int destino, int nuevoPeso) {
         eliminarRuta(origen, destino); // primero elimina la ruta existente
         agregarRuta(origen, destino, nuevoPeso); // luego la vuelve a agregar con el nuevo peso
     }
 
-    /** devuelve las rutas salientes de un nodo */
+    // devuelve las rutas salientes de un nodo 
     public List<AristaRuta> obtenerRutas(int origen) {
-        // si el nodo existe, retorna su lista de aristas
+        // si el nodo existe
         if (origen < lista.size()) {
-            return lista.get(origen);
+            return lista.get(origen); //retorna su lista de aristas
         }
         // si no existe, retorna lista vacia para evitar null
         return new ArrayList<>();
     }
 
-    /** numero total de nodos registrados en el grafo */
+    // numero total de nodos registrados en el grafo 
     public int cantidadNodos() {
         return lista.size(); // devuelve el tamano de la lista principal
     }
