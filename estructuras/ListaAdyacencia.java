@@ -8,20 +8,20 @@ import java.util.List; // importa la interfaz list
  * lista de adyacencia para grafo dirigido y ponderado.
  */
 public class ListaAdyacencia {
-    // para cada nodo guardamos su lista de aristas salientes
+    // es una lista donde en cada nodo guardamos su lista de aristas salientes
     private List<List<AristaRuta>> lista; 
 
     // constructor: crea la lista principal vacia
     public ListaAdyacencia() {
-        lista = new ArrayList<>(); // inicializa lista como arraylist
+        lista = new ArrayList<>(); //crea la lista principal vacía para empezar a añadir nodos
     }
 
-    /** añade un nuevo nodo (ubicacion) al grafo */
+    // añade un nuevo nodo (ubicacion) al grafo //
     public void agregarNodo() {
         lista.add(new ArrayList<>()); // añade una lista vacia para el nuevo nodo
     }
 
-    /** añade una ruta dirigida con peso */
+    // añade una ruta dirigida con peso //
     public void agregarRuta(int origen, int destino, int peso) {
         // verifica que origen y destino existan en el grafo
         if (origen < lista.size() && destino < lista.size()) {
@@ -30,7 +30,7 @@ public class ListaAdyacencia {
         }
     }
 
-    /** elimina la ruta origen->destino si existe */
+    // elimina la ruta origen->destino si existe //
     public void eliminarRuta(int origen, int destino) {
         // solo opera si el nodo origen existe
         if (origen < lista.size()) {
@@ -39,7 +39,7 @@ public class ListaAdyacencia {
         }
     }
 
-    /** modifica (o define de nuevo) el peso de la ruta */
+    // modifica (o define de nuevo) el peso de la ruta //
     public void modificarRuta(int origen, int destino, int nuevoPeso) {
         eliminarRuta(origen, destino); // primero elimina la ruta existente
         agregarRuta(origen, destino, nuevoPeso); // luego la vuelve a agregar con el nuevo peso
