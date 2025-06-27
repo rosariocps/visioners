@@ -26,7 +26,11 @@ public class Producto implements Comparable<Producto> {
     @Override
     public int compareTo(Producto otro) {
         // Comparación por código para ordenamiento en el árbol B+
-        return this.codigo.compareTo(otro.codigo);
+        return this.codigo.compareTo(otro.codigo); 
+        //negativo si es menor
+        //cero si es igual
+        //positivo si es mayor
+        //ejemplo: // salida negativa, porque "A01" < "B02"
     }
 
     @Override
