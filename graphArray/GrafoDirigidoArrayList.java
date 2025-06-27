@@ -1,6 +1,7 @@
 package graphArray;
 
 import exceptions.ExceptionIsEmpty;
+import exceptions.ItemDuplicated;
 import java.util.ArrayList;
 import queuelink.PriorityQueueLinkSort;
 import queuelink.QueueLink;
@@ -19,25 +20,50 @@ public class GrafoDirigidoArrayList<E> {
         listVertex = new ArrayList<>(); //Inicializa la lista de vértices vacía
     }
 
-    // Devuelve una lista con los datos de todos los vértices del grafo
+    // Método que devuelve una lista con los datos de todos los vértices del grafo
+    // Devuelve todas las ubicaciones del mapa del almacén
     public ArrayList<E> getListVertices() {
-        ArrayList<E> lista = new ArrayList<>();
+        ArrayList<E> lista = new ArrayList<>(); // Creamos una lista vacía
+
+        // Para cada vértice v que está dentro de la lista de vértices listVertex
         for (Vertex<E> v : listVertex) {
-            lista.add(v.getData());
+            // Obtenemos el dato del vértice (o sea, la ubicación del almacén)
+            lista.add(v.getData()); // y lo agregamos a la nueva lista
         }
-        return lista;
+        return lista; //
     }
 
 
-    // INSERTAR VERTICE
-    public void insertVertex(E dato) {
-        if (searchVertex(dato) != null) {
-            throw new RuntimeException("El vértice ya existe");
+    // INSERTAR VÉRTICE: Insertar una nueva ubicación en el almacén
+    public void insertVertex(E dato) throws ItemDuplicated {
+        if (searchVertex(dato) != null) { // Primero buscamos el dato con el método searchVertex() y si lo encontramos:
+            throw new ItemDuplicated("El vértice ya existe"); // Entonces nos saldrá la excepcion de Item Duplicado
         }
-        listVertex.add(new Vertex<>(dato));
+        //Caso contrario, creamos un vertice nuevo y lo agregamos a la lista de vertices
+        listVertex.add(new Vertex<>(dato)); 
     }
 
-    // BUSCAR UN VERTICE
+    // INSERTAR ARISTA: Insertar una nueva ruta entre dos vertices (ubicaciones) en la lista adyacente
+    public void insertEdge(E vertexO, E vertexD, int weight) throws ItemDuplicated{
+        // Primero verificamos si existen los vertices de origen y destino
+        Vertex<E> origen = searchVertex(vertexO); //searchVertex nos permite buscar un vertice a partir de su data
+        Vertex<E> destino = searchVertex(vertexD);
+
+        // Si uno de los dos vertices no existe lanzamos una excepcion para avisar que no se puede crear la ruta
+        if (origen == null || destino == null) {
+            throw new RuntimeException("Uno o ambos vértices no existen.");
+        }
+
+        if (searchEdge(vertexO, vertexD)) { // Luego buscamos si ya existe esa arista 
+            throw new ItemDuplicated("La arista ya existe entre " + vertexO + " y " + vertexD);
+        }
+
+        // Si no existe, la insertamos
+        origen.listAdj.add(new Edge<>(destino, weight));
+    }
+
+
+     // BUSCAR UN VERTICE
     public Vertex<E> searchVertex(E data) {
         for (Vertex<E> vertex : listVertex) {
             if (vertex.getData().equals(data)) {
@@ -45,23 +71,6 @@ public class GrafoDirigidoArrayList<E> {
             }
         }
         return null;
-    }
-
-    // INSERTAR ARISTA EN GRAFO DIRIGIDO (con peso)
-    public void insertEdge(E vertexO, E vertexD, int weight) {
-        Vertex<E> origen = searchVertex(vertexO);
-        Vertex<E> destino = searchVertex(vertexD);
-
-        if (origen == null || destino == null) {
-            throw new RuntimeException("Uno o ambos vértices no existen.");
-        }
-
-        if (searchEdge(vertexO, vertexD)) {
-            System.out.println("La arista ya existe entre " + vertexO + " y " + vertexD);
-            return;
-        }
-
-        origen.listAdj.add(new Edge<>(destino, weight));
     }
 
     // BUSCAR UNA ARISTA

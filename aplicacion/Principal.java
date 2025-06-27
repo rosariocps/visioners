@@ -44,35 +44,38 @@ public class Principal {
 
             switch (opcion) {
                 case 1:
-                    // Caso para agregar una nueva zona al almacén
                     System.out.print("Nombre de la ubicación: ");
                     String nombre = sc.nextLine();
                     System.out.print("Orden del árbol B+: ");
                     int orden = Integer.parseInt(sc.nextLine());
 
-                    // Se crea la nueva ubicación con su árbol B+ interno
                     UbicacionAlmacen nueva = new UbicacionAlmacen(nombre, orden);
-                    grafo.insertVertex(nueva); // Se agrega al grafo
-                    System.out.println("Ubicación agregada.");
+                    try {
+                        grafo.insertVertex(nueva);
+                        System.out.println("Ubicación agregada.");
+                    } catch (ItemDuplicated e) {
+                        System.out.println("Error: ya existe una ubicación con ese nombre.");
+                    }
                     break;
 
                 case 2:
-                    // Caso para agregar una ruta (camino) entre dos ubicaciones
                     System.out.print("Ubicación origen: ");
                     String origen = sc.nextLine();
                     System.out.print("Ubicación destino: ");
                     String destino = sc.nextLine();
-                    System.out.print("Peso de la ruta: "); // Puede ser distancia o tiempo
+                    System.out.print("Peso de la ruta: ");
                     int peso = Integer.parseInt(sc.nextLine());
 
-                    // Busca las ubicaciones en el grafo
                     UbicacionAlmacen u1 = buscarUbicacion(grafo, origen);
                     UbicacionAlmacen u2 = buscarUbicacion(grafo, destino);
 
-                    // Si ambas ubicaciones existen, se crea la conexión
                     if (u1 != null && u2 != null) {
-                        grafo.insertEdge(u1, u2, peso);
-                        System.out.println("Ruta agregada.");
+                        try {
+                            grafo.insertEdge(u1, u2, peso);
+                            System.out.println("Ruta agregada.");
+                        } catch (ItemDuplicated e) {
+                            System.out.println("Error: ya existe una ruta entre esas ubicaciones.");
+                        }
                     } else {
                         System.out.println("Ubicación no encontrada.");
                     }
