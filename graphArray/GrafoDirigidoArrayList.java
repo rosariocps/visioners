@@ -10,12 +10,16 @@ import stacklink.StackLink;
    Sirve para representar ubicaciones (nodos) y rutas con peso (aristas) entre almacenes. */
 
 public class GrafoDirigidoArrayList<E> {
+    
+    // Lista de todos los vértices del grafo
     protected ArrayList<Vertex<E>> listVertex;
 
+    // CONSTRUCTOR
     public GrafoDirigidoArrayList() {
-        listVertex = new ArrayList<>();
+        listVertex = new ArrayList<>(); //Inicializa la lista de vértices vacía
     }
 
+    // Devuelve una lista con los datos de todos los vértices del grafo
     public ArrayList<E> getListVertices() {
         ArrayList<E> lista = new ArrayList<>();
         for (Vertex<E> v : listVertex) {
