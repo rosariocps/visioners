@@ -1,7 +1,6 @@
 package almacen;
 
 import btreepluss.BTreePluss;
-import almacen.Producto;
 
 public class UbicacionAlmacen {
     private String nombre;
