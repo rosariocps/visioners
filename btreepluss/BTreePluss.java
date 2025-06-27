@@ -1,6 +1,6 @@
 package btreepluss;
 
-import exceptions.ExceptionIsEmpty;
+//import exceptions.ExceptionIsEmpty;
 import exceptions.ItemDuplicated;
 import exceptions.ItemNotFound;
 
