@@ -63,30 +63,41 @@ public class GrafoDirigidoArrayList<E> {
     }
 
 
-     // BUSCAR UN VERTICE
+    // busca en listvertex un vertice cuyo dato coincida con data
     public Vertex<E> searchVertex(E data) {
+        // recorremos cada vertice en la lista
         for (Vertex<E> vertex : listVertex) {
+            // si el dato del vertice es igual a data, retornamos ese vertice
             if (vertex.getData().equals(data)) {
                 return vertex;
             }
         }
+        // si no encontramos ningun vertice con ese dato, devolvemos null
         return null;
     }
 
-    // BUSCAR UNA ARISTA
+
+    // busca si existe una arista de v hacia z en el grafo
     public boolean searchEdge(E v, E z) {
+        // obtenemos el vertice origen con dato v
         Vertex<E> vertV = searchVertex(v);
+        // obtenemos el vertice destino con dato z
         Vertex<E> vertZ = searchVertex(z);
 
+        // si alguno de los dos vertices no existe, no puede haber arista
         if (vertV == null || vertZ == null) return false;
 
+        // recorremos la lista de adyacencia del vertice origen
         for (Edge<E> edge : vertV.listAdj) {
+            // si el destino de la arista coincide con vertZ, existe la arista
             if (edge.getRefDest().equals(vertZ)) {
                 return true;
             }
         }
+        // si terminamos el bucle sin encontrar la arista, devolvemos false
         return false;
     }
+
 
     // ELIMINAR VÉRTICE
     public void removeVertex(E v) {
@@ -139,51 +150,65 @@ public class GrafoDirigidoArrayList<E> {
         }
     }
 
-    // MODIFICAR VERTICE
+    // modifica el dato de un vertice de oldData a newData en el grafo
     public boolean updateVertex(E oldData, E newData) {
+        // busca el vertice con el dato antiguo
         Vertex<E> vertex = searchVertex(oldData);
+        // si no existe, no se puede modificar
         if (vertex == null) return false;
-
+        // si ya hay otro vertice con newData, evitamos duplicados
         if (searchVertex(newData) != null) return false;
-
+        // actualizamos el dato del vertice
         vertex.setData(newData);
-
+        // recorremos todos los vertices para actualizar referencias de aristas
         for (Vertex<E> actual : listVertex) {
+            // por cada arista en la lista de adyacencia
             for (Edge<E> edge : actual.listAdj) {
+                // si la arista apunta al vertice modificado
                 if (edge.getRefDest().equals(vertex)) {
-                    
+                    // aqui podria actualizarse algun dato asociado a la arista si hiciera falta
                 }
             }
         }
-
+        // modificacion realizada con exito
         return true;
     }
 
-    // MODIFICAR PESO DE ARISTA
+
+    // cambia el peso de la arista de v1 hacia v2 a newWeight
     public boolean updateEdgeWeight(E v1, E v2, int newWeight) {
+        // buscamos el vertice origen con dato v1
         Vertex<E> origen = searchVertex(v1);
+        // buscamos el vertice destino con dato v2
         Vertex<E> destino = searchVertex(v2);
 
+        // si origen o destino no existen, no se puede modificar
         if (origen == null || destino == null) return false;
 
+        // recorremos la lista de adyacencia del vertice origen
         for (Edge<E> edge : origen.listAdj) {
+            // si encontramos la arista que apunta al vertice destino
             if (edge.getRefDest().equals(destino)) {
+                // actualizamos el peso de esa arista
                 edge.setWeight(newWeight);
-                return true;
+                return true; // modificacion exitosa
             }
         }
+        // no se encontro la arista correcta
         return false;
     }
 
-    // IMPRIMIR GRAFO
+
+    // imprime el grafo concatenando la representacion de cada vertice
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
-        for (Vertex<E> vertex : listVertex) {
-            result.append(vertex.toString());
+        StringBuilder result = new StringBuilder();  // builder para armar la cadena resultado
+        for (Vertex<E> vertex : listVertex) {       // itera sobre cada vertice en la lista
+            result.append(vertex.toString());       // agrega la cadena de cada vertice
         }
-        return result.toString();
+        return result.toString();                   // retorna la cadena completa del grafo
     }
+
 
     // MÉTODO PARA REALIZAR UNA BÚSQUEDA EN PROFUNDIDAD (DFS)
     public void dfs(E v) {
@@ -295,128 +320,168 @@ public class GrafoDirigidoArrayList<E> {
 
 
   
-    //  CLASE INTERNA ParValor: Esta clase almacena 
-     //un vértice y su distancia acumulada desde el origen
+    // clase interna que asocia un vertice con su distancia acumulada desde el nodo origen
     private class ParValor {
-        Vertex<E> vertice;
-        int distancia;
+        Vertex<E> vertice; // vertice al que corresponde esta distancia
+        int distancia;     // distancia acumulada desde el origen hasta este vertice
 
+        // constructor que inicializa el par con el vertice y su distancia
         public ParValor(Vertex<E> vertice, int distancia) {
-            this.vertice = vertice;
-            this.distancia = distancia;
+            this.vertice = vertice;   // asigna el vertice
+            this.distancia = distancia; // asigna la distancia acumulada
         }
     }
 
 
-    /// MÉTODO getDistancia: Busca en la lista de distancias cuál es la distancia actual asociada al vértice 'v'
+
+    // metodo que devuelve la distancia asociada al vertice v segun la lista de pares
     private int getDistancia(ArrayList<ParValor> distancias, Vertex<E> v) {
+        // recorremos cada par de vertice y distancia en la lista
         for (ParValor pv : distancias) {
+            // si el vertice del par coincide con v
             if (pv.vertice.equals(v)) {
+                // retornamos la distancia asociada
                 return pv.distancia;
             }
         }
+        // si no se encontro, devolvemos el valor maximo entero (infinito)
         return Integer.MAX_VALUE;
     }
 
-    // MÉTODO actualizarDistancia: Reemplaza la distancia del vértice 'v' por la nueva que se le pasa
+    // metodo que busca el vertice v en la lista y asigna nuevaDistancia a su par
     private void actualizarDistancia(ArrayList<ParValor> distancias, Vertex<E> v, int nuevaDistancia) {
+        // recorremos cada par de vertice y distancia en la lista
         for (ParValor pv : distancias) {
+            // si el vertice del par es igual a v
             if (pv.vertice.equals(v)) {
+                // asignamos la nueva distancia al par correspondiente
                 pv.distancia = nuevaDistancia;
+                // salimos del metodo tras actualizar la distancia
                 return;
             }
         }
     }
 
+
      // MÉTODO PRINCIPAL DIJKSTRA: Calcula el camino más corto desde el vértice 'v' a todos los vertices
     public void Dijkstra(E v) {
+        // buscamos el vertice origen por su dato v
         Vertex<E> origen = searchVertex(v);
+        // si el vertice no existe, mostramos mensaje y salimos
         if (origen == null) {
             System.out.println("El vértice no existe.");
             return;
         }
 
+        // lista para llevar control de vertices ya visitados
         ArrayList<Vertex<E>> visitados = new ArrayList<>();
+        // lista de pares vertice-distancia acumulada
         ArrayList<ParValor> distancias = new ArrayList<>();
+        // cola de prioridad para seleccionar el siguiente vertice con menor distancia
         PriorityQueueLinkSort<Vertex<E>, Integer> cola = new PriorityQueueLinkSort<>();
 
-        // Inicializamos las distancias: 0 para el origen, infinito para los demás
+        // inicializamos las distancias: 0 para el origen, infinito para los demas
         for (Vertex<E> vert : listVertex) {
             int distanciaInicial = vert.equals(origen) ? 0 : Integer.MAX_VALUE;
             distancias.add(new ParValor(vert, distanciaInicial));
         }
 
-        // Insertamos el origen en la cola con prioridad 0
+        // insertamos el vertice origen en la cola con prioridad 0
         cola.enqueue(origen, 0);
 
+        // iteramos mientras queden vertices por procesar en la cola
         while (!cola.isEmpty()) {
             Vertex<E> actual;
             try {
-                actual = cola.dequeue(); // Sacamos el vértice con menor distancia
+                // sacamos el vertice con menor distancia acumulada
+                actual = cola.dequeue();
             } catch (ExceptionIsEmpty e) {
+                // si la cola esta vacia lanzando excepcion, salimos del bucle
                 break;
             }
 
+            // si ya procesamos este vertice, lo saltamos
             if (visitados.contains(actual)) continue;
+            // marcamos el vertice actual como visitado
             visitados.add(actual);
 
+            // recorremos las aristas salientes del vertice actual
             for (Edge<E> arista : actual.listAdj) {
-                Vertex<E> vecino = arista.getRefDest();
-                int peso = arista.getWeight();
+                Vertex<E> vecino = arista.getRefDest(); // destino de la arista
+                int peso = arista.getWeight();          // peso de la arista
 
+                // si el destino aun no fue visitado
                 if (!visitados.contains(vecino)) {
+                    // obtenemos la distancia actual del vertice actual
                     int distanciaActual = getDistancia(distancias, actual);
+                    // calculamos la distancia posible hacia el vecino
                     int nuevaDistancia = distanciaActual + peso;
 
+                    // si esta ruta es mejor que la almacenada para el vecino
                     if (nuevaDistancia < getDistancia(distancias, vecino)) {
+                        // actualizamos la distancia en la lista de distancias
                         actualizarDistancia(distancias, vecino, nuevaDistancia);
+                        // encolamos el vecino con su nueva prioridad
                         cola.enqueue(vecino, nuevaDistancia);
                     }
                 }
             }
         }
 
-        // Mostramos las distancias finales
+        // mostramos todas las distancias finales desde el origen
         System.out.println("Distancias desde " + v + ":");
         for (ParValor pv : distancias) {
-            System.out.println("- Hasta " + pv.vertice.getData() + ": " +
-                (pv.distancia == Integer.MAX_VALUE ? "Inalcanzable" : pv.distancia));
+            // si la distancia es infinito, lo marcamos como inalcanzable
+            String salida = (pv.distancia == Integer.MAX_VALUE) ? "Inalcanzable" : String.valueOf(pv.distancia);
+            System.out.println("- Hasta " + pv.vertice.getData() + ": " + salida);
         }
     }
 
 
+    // detecta si existe al menos un ciclo en el grafo dirigido
     public boolean hasCycle() {
+        // lista de vertices completamente visitados
         ArrayList<Vertex<E>> visitados = new ArrayList<>();
+        // lista de vertices en la pila de recursion (camino actual)
         ArrayList<Vertex<E>> enRecursion = new ArrayList<>();
 
+        // recorremos cada vertice del grafo
         for (Vertex<E> v : listVertex) {
+            // si aun no hemos explorado este vertice
             if (!visitados.contains(v)) {
+                // iniciamos DFS desde v; si detectamos ciclo, devolvemos true
                 if (dfsDetectCycle(v, visitados, enRecursion)) {
                     return true; // ciclo encontrado
                 }
             }
         }
-
+        // si terminamos sin hallar ciclo, devolvemos false
         return false; // no hay ciclos
     }
 
-    private boolean dfsDetectCycle(Vertex<E> v, ArrayList<Vertex<E>> visitados, ArrayList<Vertex<E>> enRecursion) {
-        visitados.add(v);
-        enRecursion.add(v);
 
+    // rutina DFS que detecta ciclos usando la lista enRecursion como pila lógica
+    private boolean dfsDetectCycle(Vertex<E> v, ArrayList<Vertex<E>> visitados, ArrayList<Vertex<E>> enRecursion) {
+        visitados.add(v);       // marcamos v como visitado globalmente
+        enRecursion.add(v);     // y lo añadimos al camino actual (pila lógica)
+
+        // recorremos cada arista saliente de v
         for (Edge<E> arco : v.listAdj) {
-            Vertex<E> vecino = arco.getRefDest();
+            Vertex<E> vecino = arco.getRefDest(); // obtenemos el vertice destino
             if (!visitados.contains(vecino)) {
+                // si el vecino no ha sido visitado, descendemos recursivamente
                 if (dfsDetectCycle(vecino, visitados, enRecursion)) {
-                    return true;
+                    return true; // si cualquier llamada detecta ciclo, lo propagamos
                 }
             } else if (enRecursion.contains(vecino)) {
+                // si el vecino ya está en el camino actual, hay un ciclo
                 return true; // ciclo detectado
             }
         }
 
-        enRecursion.remove(v);
-        return false;
+        enRecursion.remove(v); // al salir de v, lo retiramos de la pila lógica
+        return false;          // no se detectó ciclo en esta rama
     }
+
 
 }
