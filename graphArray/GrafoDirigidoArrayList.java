@@ -185,27 +185,46 @@ public class GrafoDirigidoArrayList<E> {
         return result.toString();
     }
 
-
+    // MÉTODO PARA REALIZAR UNA BÚSQUEDA EN PROFUNDIDAD (DFS)
     public void dfs(E v) {
+        // Primero buscamos el vértice a partir de la data que se pasa como parámetro
         Vertex<E> start = searchVertex(v);
+
+        // Verificamos si ese vértice realmente existe; si no existe, simplemente mostramos un mensaje y detenemos el recorrido
         if (start == null) {
             System.out.println("Vértice no encontrado.");
             return;
         }
 
+        // Creamos una lista para ir guardando los vértices que ya hemos visitado, esto para no repetirnos en el recorrido
         ArrayList<Vertex<E>> visitados = new ArrayList<>();
+
+        // Creamos una pila, porque DFS funciona con una estructura LIFO (último en entrar, primero en salir)
         StackLink<Vertex<E>> pila = new StackLink<>();
 
         try {
+            // Insertamos el vértice de inicio en la pila, porque ahí comenzará todo el recorrido
             pila.push(start);
+
+            // Entramos en un bucle que se repite mientras la pila tenga elementos, es decir, mientras haya vértices por recorrer
             while (!pila.isEmpty()) {
+                // Sacamos el último vértice que hemos insertado en la pila
                 Vertex<E> actual = pila.pop();
+
+                // Verificamos si ese vértice ya fue visitado; si no lo fue, entonces lo procesamos
                 if (!visitados.contains(actual)) {
+                    // Imprimimos su contenido en consola (su data)
                     System.out.print(actual.getData() + " ");
+
+                    // Lo marcamos como visitado para no volver a recorrerlo
                     visitados.add(actual);
 
+                    // Ahora revisamos todas las aristas (rutas) que salen desde ese vértice actual
                     for (Edge<E> arista : actual.listAdj) {
+                        // Obtenemos el vértice de destino al que apunta esa arista
                         Vertex<E> destino = arista.getRefDest();
+
+                        // Si ese vértice aún no ha sido visitado, lo agregamos a la pila para seguir el recorrido desde ahí más adelante
                         if (!visitados.contains(destino)) {
                             pila.push(destino);
                         }
@@ -213,33 +232,51 @@ public class GrafoDirigidoArrayList<E> {
                 }
             }
         } catch (ExceptionIsEmpty e) {
+            // En caso ocurra un error con la pila (como intentar hacer pop cuando está vacía), lo capturamos y mostramos el mensaje
             System.out.println("Error en dfs: " + e.getMessage());
         }
     }
 
 
+    // MÉTODO PARA REALIZAR UN RECORRIDO EN ANCHURA (BFS)
     public void bfs(E v) {
+        // Lo primero que hacemos es buscar el vértice inicial, usando la data que se pasó como parámetro
         Vertex<E> verticeInicial = searchVertex(v);
+
+        // Verificamos si el vértice inicial realmente existe; si no existe, mostramos un mensaje y salimos del método
         if (verticeInicial == null) {
             System.out.println("El vértice inicial no existe.");
             return;
         }
 
+        // Creamos una cola, porque BFS trabaja con una estructura FIFO (primero en entrar, primero en salir)
         QueueLink<Vertex<E>> cola = new QueueLink<>();
+
+        // Creamos una lista para guardar los vértices que ya hemos visitado, para evitar repetirlos
         ArrayList<Vertex<E>> visitados = new ArrayList<>();
 
+        // Insertamos el vértice inicial en la cola y también lo agregamos a la lista de visitados
         cola.enqueue(verticeInicial);
         visitados.add(verticeInicial);
 
+        // Mostramos el mensaje inicial para indicar el tipo de recorrido
         System.out.print("Recorrido en anchura: ");
 
+        // Entramos en un bucle que se ejecutará mientras haya vértices en la cola por procesar
         while (!cola.isEmpty()) {
             try {
+                // Sacamos el primer vértice de la cola, ese será el actual que vamos a procesar
                 Vertex<E> verticeActual = cola.dequeue();
+
+                // Imprimimos su contenido (su data) por consola
                 System.out.print(verticeActual.getData() + " ");
 
+                // Recorremos todas las aristas del vértice actual
                 for (Edge<E> arista : verticeActual.listAdj) {
+                    // Obtenemos el vértice vecino (el de destino de la arista)
                     Vertex<E> verticeVecino = arista.getRefDest();
+
+                    // Si ese vecino aún no ha sido visitado, lo agregamos a la cola y lo marcamos como visitado
                     if (!visitados.contains(verticeVecino)) {
                         cola.enqueue(verticeVecino);
                         visitados.add(verticeVecino);
@@ -247,24 +284,19 @@ public class GrafoDirigidoArrayList<E> {
                 }
 
             } catch (ExceptionIsEmpty e) {
+                // Si ocurre un error al intentar sacar de la cola (como si estuviera vacía por error), mostramos el mensaje
                 System.out.println("Error en la cola: " + e.getMessage());
             }
         }
 
+        // Saltamos línea al final del recorrido
         System.out.println();
     }
 
 
-    private class Par {
-        Vertex<E> hijo;
-        Vertex<E> padre;
-
-        public Par(Vertex<E> hijo, Vertex<E> padre) {
-            this.hijo = hijo;
-            this.padre = padre;
-        }
-    }
-
+  
+    //  CLASE INTERNA ParValor: Esta clase almacena 
+     //un vértice y su distancia acumulada desde el origen
     private class ParValor {
         Vertex<E> vertice;
         int distancia;
@@ -275,15 +307,8 @@ public class GrafoDirigidoArrayList<E> {
         }
     }
 
-    private Vertex<E> buscarPadre(Vertex<E> hijo, ArrayList<Par> padres) {
-        for (Par par : padres) {
-            if (par.hijo.equals(hijo)) {
-                return par.padre;
-            }
-        }
-        return null;
-    }
 
+    /// MÉTODO getDistancia: Busca en la lista de distancias cuál es la distancia actual asociada al vértice 'v'
     private int getDistancia(ArrayList<ParValor> distancias, Vertex<E> v) {
         for (ParValor pv : distancias) {
             if (pv.vertice.equals(v)) {
@@ -293,6 +318,7 @@ public class GrafoDirigidoArrayList<E> {
         return Integer.MAX_VALUE;
     }
 
+    // MÉTODO actualizarDistancia: Reemplaza la distancia del vértice 'v' por la nueva que se le pasa
     private void actualizarDistancia(ArrayList<ParValor> distancias, Vertex<E> v, int nuevaDistancia) {
         for (ParValor pv : distancias) {
             if (pv.vertice.equals(v)) {
@@ -302,43 +328,32 @@ public class GrafoDirigidoArrayList<E> {
         }
     }
 
-    private void reemplazarPadre(ArrayList<Par> padres, Vertex<E> hijo, Vertex<E> nuevoPadre) {
-        for (Par par : padres) {
-            if (par.hijo.equals(hijo)) {
-                par.padre = nuevoPadre;
-                return;
-            }
-        }
-        padres.add(new Par(hijo, nuevoPadre));
-    }
 
-    public StackLink<E> Dijkstra(E v, E w) throws ExceptionIsEmpty {
-        StackLink<E> camino = new StackLink<>();
+     // MÉTODO PRINCIPAL DIJKSTRA: Calcula el camino más corto desde el vértice 'v' a todos los vertices
+    public void Dijkstra(E v) {
         Vertex<E> origen = searchVertex(v);
-        Vertex<E> destino = searchVertex(w);
-
-        if (origen == null || destino == null) {
-            System.out.println("Uno de los vértices no existe.");
-            return camino;
+        if (origen == null) {
+            System.out.println("El vértice no existe.");
+            return;
         }
 
         ArrayList<Vertex<E>> visitados = new ArrayList<>();
-        ArrayList<Par> padres = new ArrayList<>();
         ArrayList<ParValor> distancias = new ArrayList<>();
         PriorityQueueLinkSort<Vertex<E>, Integer> cola = new PriorityQueueLinkSort<>();
 
+        // Inicializamos las distancias: 0 para el origen, infinito para los demás
         for (Vertex<E> vert : listVertex) {
             int distanciaInicial = vert.equals(origen) ? 0 : Integer.MAX_VALUE;
             distancias.add(new ParValor(vert, distanciaInicial));
         }
 
+        // Insertamos el origen en la cola con prioridad 0
         cola.enqueue(origen, 0);
-        padres.add(new Par(origen, null));
 
         while (!cola.isEmpty()) {
             Vertex<E> actual;
             try {
-                actual = cola.dequeue();
+                actual = cola.dequeue(); // Sacamos el vértice con menor distancia
             } catch (ExceptionIsEmpty e) {
                 break;
             }
@@ -357,24 +372,17 @@ public class GrafoDirigidoArrayList<E> {
                     if (nuevaDistancia < getDistancia(distancias, vecino)) {
                         actualizarDistancia(distancias, vecino, nuevaDistancia);
                         cola.enqueue(vecino, nuevaDistancia);
-                        reemplazarPadre(padres, vecino, actual);
                     }
                 }
             }
         }
 
-        if (buscarPadre(destino, padres) == null && !origen.equals(destino)) {
-            System.out.println("No existe un camino de " + v + " a " + w);
-            return camino;
+        // Mostramos las distancias finales
+        System.out.println("Distancias desde " + v + ":");
+        for (ParValor pv : distancias) {
+            System.out.println("- Hasta " + pv.vertice.getData() + ": " +
+                (pv.distancia == Integer.MAX_VALUE ? "Inalcanzable" : pv.distancia));
         }
-
-        Vertex<E> actual = destino;
-        while (actual != null) {
-            camino.push(actual.getData());
-            actual = buscarPadre(actual, padres);
-        }
-
-        return camino;
     }
 
 
@@ -411,6 +419,5 @@ public class GrafoDirigidoArrayList<E> {
         enRecursion.remove(v);
         return false;
     }
-
 
 }
