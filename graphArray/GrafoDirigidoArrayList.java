@@ -88,26 +88,55 @@ public class GrafoDirigidoArrayList<E> {
         return false;
     }
 
-    // ELIMINAR VERTICE
+    // ELIMINAR VÉRTICE
     public void removeVertex(E v) {
+        // Primero buscamos el vértice a eliminar usando el método searchVertex
         Vertex<E> vertexToRemove = searchVertex(v);
+
+        // Si no se encuentra el vértice (es null), no hacemos nada y salimos del método
         if (vertexToRemove == null) return;
 
+        // Recorremos todos los vértices del grafo
         for (Vertex<E> vertex : listVertex) {
-            vertex.listAdj.removeIf(edge -> edge.getRefDest().equals(vertexToRemove));
+            // Para cada vértice, recorremos su lista de adyacencia
+            for (int i = 0; i < vertex.listAdj.size(); i++) {
+                Edge<E> edge = vertex.listAdj.get(i);
+
+                // Si encontramos una arista cuya referencia de destino es el vértice a eliminar
+                if (edge.getRefDest().equals(vertexToRemove)) {
+                    // La eliminamos
+                    vertex.listAdj.remove(i);
+                    // Disminuimos el índice para no saltarnos ningún elemento
+                    i--;
+                }
+            }
         }
 
+        // Finalmente eliminamos el vértice de la lista de vértices
         listVertex.remove(vertexToRemove);
     }
 
     // ELIMINAR ARISTA
     public void removeEdge(E vertexO, E vertexD) {
+        // Buscamos el vértice de origen y de destino
         Vertex<E> origen = searchVertex(vertexO);
         Vertex<E> destino = searchVertex(vertexD);
 
+        // Si uno de los dos no existe, salimos del método sin hacer nada
         if (origen == null || destino == null) return;
 
-        origen.listAdj.removeIf(edge -> edge.getRefDest().equals(destino));
+        // Recorremos la lista de adyacencia del vértice de origen
+        for (int i = 0; i < origen.listAdj.size(); i++) {
+            Edge<E> edge = origen.listAdj.get(i);
+
+            // Si encontramos una arista cuya referencia de destino es igual al vértice destino
+            if (edge.getRefDest().equals(destino)) {
+                // Eliminamos esa arista
+                origen.listAdj.remove(i);
+                // Disminuimos el índice para evitar saltar elementos tras la eliminación
+                i--;
+            }
+        }
     }
 
     // MODIFICAR VERTICE
@@ -122,7 +151,7 @@ public class GrafoDirigidoArrayList<E> {
         for (Vertex<E> actual : listVertex) {
             for (Edge<E> edge : actual.listAdj) {
                 if (edge.getRefDest().equals(vertex)) {
-                    // referencia sigue siendo válida, pero el .toString() o equals puede cambiar
+                    
                 }
             }
         }
