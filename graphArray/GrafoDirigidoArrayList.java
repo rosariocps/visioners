@@ -328,7 +328,6 @@ public class GrafoDirigidoArrayList<E> {
         }
     }
 
-
      // MÉTODO PRINCIPAL DIJKSTRA: Calcula el camino más corto desde el vértice 'v' a todos los vertices
     public void Dijkstra(E v) {
         Vertex<E> origen = searchVertex(v);
