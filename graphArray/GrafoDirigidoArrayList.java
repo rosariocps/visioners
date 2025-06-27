@@ -1,0 +1,364 @@
+package graphArray;
+
+import java.util.ArrayList;
+
+import exceptions.ExceptionIsEmpty;
+import queuelink.PriorityQueueLinkSort;
+import queuelink.QueueLink;
+import stacklink.StackLink;
+
+
+public class GrafoDirigidoArrayList<E> {
+    protected ArrayList<Vertex<E>> listVertex;
+
+    public GrafoDirigidoArrayList() {
+        listVertex = new ArrayList<>();
+    }
+
+    // INSERTAR VERTICE
+    public void insertVertex(E dato) {
+        if (searchVertex(dato) != null) {
+            throw new RuntimeException("El vértice ya existe");
+        }
+        listVertex.add(new Vertex<>(dato));
+    }
+
+    // BUSCAR UN VERTICE
+    public Vertex<E> searchVertex(E data) {
+        for (Vertex<E> vertex : listVertex) {
+            if (vertex.getData().equals(data)) {
+                return vertex;
+            }
+        }
+        return null;
+    }
+
+    // INSERTAR ARISTA EN GRAFO DIRIGIDO (con peso)
+    public void insertEdge(E vertexO, E vertexD, int weight) {
+        Vertex<E> origen = searchVertex(vertexO);
+        Vertex<E> destino = searchVertex(vertexD);
+
+        if (origen == null || destino == null) {
+            throw new RuntimeException("Uno o ambos vértices no existen.");
+        }
+
+        if (searchEdge(vertexO, vertexD)) {
+            System.out.println("La arista ya existe entre " + vertexO + " y " + vertexD);
+            return;
+        }
+
+        origen.listAdj.add(new Edge<>(destino, weight));
+    }
+
+    // BUSCAR UNA ARISTA
+    public boolean searchEdge(E v, E z) {
+        Vertex<E> vertV = searchVertex(v);
+        Vertex<E> vertZ = searchVertex(z);
+
+        if (vertV == null || vertZ == null) return false;
+
+        for (Edge<E> edge : vertV.listAdj) {
+            if (edge.getRefDest().equals(vertZ)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // ELIMINAR VERTICE
+    public void removeVertex(E v) {
+        Vertex<E> vertexToRemove = searchVertex(v);
+        if (vertexToRemove == null) return;
+
+        for (Vertex<E> vertex : listVertex) {
+            vertex.listAdj.removeIf(edge -> edge.getRefDest().equals(vertexToRemove));
+        }
+
+        listVertex.remove(vertexToRemove);
+    }
+
+    // ELIMINAR ARISTA
+    public void removeEdge(E vertexO, E vertexD) {
+        Vertex<E> origen = searchVertex(vertexO);
+        Vertex<E> destino = searchVertex(vertexD);
+
+        if (origen == null || destino == null) return;
+
+        origen.listAdj.removeIf(edge -> edge.getRefDest().equals(destino));
+    }
+
+    // MODIFICAR VERTICE
+    public boolean updateVertex(E oldData, E newData) {
+        Vertex<E> vertex = searchVertex(oldData);
+        if (vertex == null) return false;
+
+        if (searchVertex(newData) != null) return false;
+
+        vertex.setData(newData);
+
+        for (Vertex<E> actual : listVertex) {
+            for (Edge<E> edge : actual.listAdj) {
+                if (edge.getRefDest().equals(vertex)) {
+                    // referencia sigue siendo válida, pero el .toString() o equals puede cambiar
+                }
+            }
+        }
+
+        return true;
+    }
+
+    // MODIFICAR PESO DE ARISTA
+    public boolean updateEdgeWeight(E v1, E v2, int newWeight) {
+        Vertex<E> origen = searchVertex(v1);
+        Vertex<E> destino = searchVertex(v2);
+
+        if (origen == null || destino == null) return false;
+
+        for (Edge<E> edge : origen.listAdj) {
+            if (edge.getRefDest().equals(destino)) {
+                edge.setWeight(newWeight);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // IMPRIMIR GRAFO
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        for (Vertex<E> vertex : listVertex) {
+            result.append(vertex.toString());
+        }
+        return result.toString();
+    }
+
+
+    public void dfs(E v) {
+        Vertex<E> start = searchVertex(v);
+        if (start == null) {
+            System.out.println("Vértice no encontrado.");
+            return;
+        }
+
+        ArrayList<Vertex<E>> visitados = new ArrayList<>();
+        StackLink<Vertex<E>> pila = new StackLink<>();
+
+        try {
+            pila.push(start);
+            while (!pila.isEmpty()) {
+                Vertex<E> actual = pila.pop();
+                if (!visitados.contains(actual)) {
+                    System.out.print(actual.getData() + " ");
+                    visitados.add(actual);
+
+                    for (Edge<E> arista : actual.listAdj) {
+                        Vertex<E> destino = arista.getRefDest();
+                        if (!visitados.contains(destino)) {
+                            pila.push(destino);
+                        }
+                    }
+                }
+            }
+        } catch (ExceptionIsEmpty e) {
+            System.out.println("Error en dfs: " + e.getMessage());
+        }
+    }
+
+
+    public void bfs(E v) {
+        Vertex<E> verticeInicial = searchVertex(v);
+        if (verticeInicial == null) {
+            System.out.println("El vértice inicial no existe.");
+            return;
+        }
+
+        QueueLink<Vertex<E>> cola = new QueueLink<>();
+        ArrayList<Vertex<E>> visitados = new ArrayList<>();
+
+        cola.enqueue(verticeInicial);
+        visitados.add(verticeInicial);
+
+        System.out.print("Recorrido en anchura: ");
+
+        while (!cola.isEmpty()) {
+            try {
+                Vertex<E> verticeActual = cola.dequeue();
+                System.out.print(verticeActual.getData() + " ");
+
+                for (Edge<E> arista : verticeActual.listAdj) {
+                    Vertex<E> verticeVecino = arista.getRefDest();
+                    if (!visitados.contains(verticeVecino)) {
+                        cola.enqueue(verticeVecino);
+                        visitados.add(verticeVecino);
+                    }
+                }
+
+            } catch (ExceptionIsEmpty e) {
+                System.out.println("Error en la cola: " + e.getMessage());
+            }
+        }
+
+        System.out.println();
+    }
+
+
+    private class Par {
+        Vertex<E> hijo;
+        Vertex<E> padre;
+
+        public Par(Vertex<E> hijo, Vertex<E> padre) {
+            this.hijo = hijo;
+            this.padre = padre;
+        }
+    }
+
+    private class ParValor {
+        Vertex<E> vertice;
+        int distancia;
+
+        public ParValor(Vertex<E> vertice, int distancia) {
+            this.vertice = vertice;
+            this.distancia = distancia;
+        }
+    }
+
+    private Vertex<E> buscarPadre(Vertex<E> hijo, ArrayList<Par> padres) {
+        for (Par par : padres) {
+            if (par.hijo.equals(hijo)) {
+                return par.padre;
+            }
+        }
+        return null;
+    }
+
+    private int getDistancia(ArrayList<ParValor> distancias, Vertex<E> v) {
+        for (ParValor pv : distancias) {
+            if (pv.vertice.equals(v)) {
+                return pv.distancia;
+            }
+        }
+        return Integer.MAX_VALUE;
+    }
+
+    private void actualizarDistancia(ArrayList<ParValor> distancias, Vertex<E> v, int nuevaDistancia) {
+        for (ParValor pv : distancias) {
+            if (pv.vertice.equals(v)) {
+                pv.distancia = nuevaDistancia;
+                return;
+            }
+        }
+    }
+
+    private void reemplazarPadre(ArrayList<Par> padres, Vertex<E> hijo, Vertex<E> nuevoPadre) {
+        for (Par par : padres) {
+            if (par.hijo.equals(hijo)) {
+                par.padre = nuevoPadre;
+                return;
+            }
+        }
+        padres.add(new Par(hijo, nuevoPadre));
+    }
+
+    public StackLink<E> Dijkstra(E v, E w) throws ExceptionIsEmpty {
+        StackLink<E> camino = new StackLink<>();
+        Vertex<E> origen = searchVertex(v);
+        Vertex<E> destino = searchVertex(w);
+
+        if (origen == null || destino == null) {
+            System.out.println("Uno de los vértices no existe.");
+            return camino;
+        }
+
+        ArrayList<Vertex<E>> visitados = new ArrayList<>();
+        ArrayList<Par> padres = new ArrayList<>();
+        ArrayList<ParValor> distancias = new ArrayList<>();
+        PriorityQueueLinkSort<Vertex<E>, Integer> cola = new PriorityQueueLinkSort<>();
+
+        for (Vertex<E> vert : listVertex) {
+            int distanciaInicial = vert.equals(origen) ? 0 : Integer.MAX_VALUE;
+            distancias.add(new ParValor(vert, distanciaInicial));
+        }
+
+        cola.enqueue(origen, 0);
+        padres.add(new Par(origen, null));
+
+        while (!cola.isEmpty()) {
+            Vertex<E> actual;
+            try {
+                actual = cola.dequeue();
+            } catch (ExceptionIsEmpty e) {
+                break;
+            }
+
+            if (visitados.contains(actual)) continue;
+            visitados.add(actual);
+
+            for (Edge<E> arista : actual.listAdj) {
+                Vertex<E> vecino = arista.getRefDest();
+                int peso = arista.getWeight();
+
+                if (!visitados.contains(vecino)) {
+                    int distanciaActual = getDistancia(distancias, actual);
+                    int nuevaDistancia = distanciaActual + peso;
+
+                    if (nuevaDistancia < getDistancia(distancias, vecino)) {
+                        actualizarDistancia(distancias, vecino, nuevaDistancia);
+                        cola.enqueue(vecino, nuevaDistancia);
+                        reemplazarPadre(padres, vecino, actual);
+                    }
+                }
+            }
+        }
+
+        if (buscarPadre(destino, padres) == null && !origen.equals(destino)) {
+            System.out.println("No existe un camino de " + v + " a " + w);
+            return camino;
+        }
+
+        Vertex<E> actual = destino;
+        while (actual != null) {
+            camino.push(actual.getData());
+            actual = buscarPadre(actual, padres);
+        }
+
+        return camino;
+    }
+
+
+    public boolean hasCycle() {
+        ArrayList<Vertex<E>> visitados = new ArrayList<>();
+        ArrayList<Vertex<E>> enRecursion = new ArrayList<>();
+
+        for (Vertex<E> v : listVertex) {
+            if (!visitados.contains(v)) {
+                if (dfsDetectCycle(v, visitados, enRecursion)) {
+                    return true; // ciclo encontrado
+                }
+            }
+        }
+
+        return false; // no hay ciclos
+    }
+
+    private boolean dfsDetectCycle(Vertex<E> v, ArrayList<Vertex<E>> visitados, ArrayList<Vertex<E>> enRecursion) {
+        visitados.add(v);
+        enRecursion.add(v);
+
+        for (Edge<E> arco : v.listAdj) {
+            Vertex<E> vecino = arco.getRefDest();
+            if (!visitados.contains(vecino)) {
+                if (dfsDetectCycle(vecino, visitados, enRecursion)) {
+                    return true;
+                }
+            } else if (enRecursion.contains(vecino)) {
+                return true; // ciclo detectado
+            }
+        }
+
+        enRecursion.remove(v);
+        return false;
+    }
+
+
+}
