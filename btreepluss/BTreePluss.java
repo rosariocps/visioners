@@ -315,7 +315,7 @@ public class BTreePluss<E extends Comparable<E>> {
     }
 
     // Recorre todas las hojas en orden
-    public void printAllOrdered() {
+    public void mostrarInorden() {
         BNode<E> current = root;
         while (current != null && !current.isLeaf) {
             current = current.childs.get(0);

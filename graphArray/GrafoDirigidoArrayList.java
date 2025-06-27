@@ -1,8 +1,7 @@
 package graphArray;
 
-import java.util.ArrayList;
-
 import exceptions.ExceptionIsEmpty;
+import java.util.ArrayList;
 import queuelink.PriorityQueueLinkSort;
 import queuelink.QueueLink;
 import stacklink.StackLink;
@@ -14,6 +13,15 @@ public class GrafoDirigidoArrayList<E> {
     public GrafoDirigidoArrayList() {
         listVertex = new ArrayList<>();
     }
+
+    public ArrayList<E> getListVertices() {
+        ArrayList<E> lista = new ArrayList<>();
+        for (Vertex<E> v : listVertex) {
+            lista.add(v.getData());
+        }
+        return lista;
+    }
+
 
     // INSERTAR VERTICE
     public void insertVertex(E dato) {

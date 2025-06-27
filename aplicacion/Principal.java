@@ -1,48 +1,112 @@
-package aplicacion; 
+package aplicacion;
 
-import estructuras.GrafoAlmacen; // importa la clase que modela el grafo del almacen
-import modelos.ArbolBProducto; // importa la clase que simula un arbol b+ sencillo
-import modelos.Producto; // importa la clase producto con codigo y nombre
-import simulacion.SimuladorInventario; // importa la clase que simula escenarios
-import visualizacion.VisualizadorTexto; // importa la clase que muestra info en consola
+import almacen.Producto;
+import almacen.UbicacionAlmacen;
+import exceptions.ItemDuplicated;
+import graphArray.GrafoDirigidoArrayList;
+import java.util.Scanner;
 
-public class Principal { // declara la clase principal
-    public static void main(String[] args) { // metodo principal, punto de entrada
-        GrafoAlmacen grafo = new GrafoAlmacen(); // crea un grafo vacio
-        grafo.agregarUbicacion("recepcion"); // agrega nodo "recepcion"
-        grafo.agregarUbicacion("pasillo 1"); // agrega nodo "pasillo 1"
-        grafo.agregarUbicacion("estante a"); // agrega nodo "estante a"
-        grafo.agregarUbicacion("estante b"); // agrega nodo "estante b"
-        grafo.agregarUbicacion("zona carga"); // agrega nodo "zona carga"
+public class Principal {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        GrafoDirigidoArrayList<UbicacionAlmacen> grafo = new GrafoDirigidoArrayList<>();
 
-        grafo.agregarRuta(0, 1, 5); // crea ruta recepcion→pasillo1 con peso 5
-        grafo.agregarRuta(1, 2, 3); // crea ruta pasillo1→estanteA con peso 3
-        grafo.agregarRuta(2, 3, 2); // crea ruta estanteA→estanteB con peso 2
-        grafo.agregarRuta(3, 4, 4); // crea ruta estanteB→zonaCarga con peso 4
+        while (true) {
+            System.out.println("\n--- MENÚ ALMACÉN ---");
+            System.out.println("1. Agregar ubicación");
+            System.out.println("2. Agregar ruta entre ubicaciones");
+            System.out.println("3. Insertar producto en ubicación");
+            System.out.println("4. Mostrar productos de una ubicación");
+            System.out.println("0. Salir");
+            System.out.print("Seleccione una opción: ");
+            int opcion = Integer.parseInt(sc.nextLine());
 
-        int n = grafo.cantidadNodos(); // obtiene numero de ubicaciones
-        ArbolBProducto[] arboles = new ArbolBProducto[n]; // crea arreglo de arboles
-        for (int i = 0; i < n; i++) { // para cada ubicacion
-            arboles[i] = new ArbolBProducto(10); // crea un arbol b+ con capacidad 10
+            if (opcion == 0) {
+                System.out.println("Saliendo...");
+                break;
+            }
+
+            switch (opcion) {
+                case 1:
+                    System.out.print("Nombre de la ubicación: ");
+                    String nombre = sc.nextLine();
+                    System.out.print("Orden del árbol B+: ");
+                    int orden = Integer.parseInt(sc.nextLine());
+
+                    UbicacionAlmacen nueva = new UbicacionAlmacen(nombre, orden);
+                    grafo.insertVertex(nueva);
+                    System.out.println("Ubicación agregada.");
+                    break;
+
+                case 2:
+                    System.out.print("Ubicación origen: ");
+                    String origen = sc.nextLine();
+                    System.out.print("Ubicación destino: ");
+                    String destino = sc.nextLine();
+                    System.out.print("Peso de la ruta: ");
+                    int peso = Integer.parseInt(sc.nextLine());
+
+                    UbicacionAlmacen u1 = buscarUbicacion(grafo, origen);
+                    UbicacionAlmacen u2 = buscarUbicacion(grafo, destino);
+
+                    if (u1 != null && u2 != null) {
+                        grafo.insertEdge(u1, u2, peso);
+                        System.out.println("Ruta agregada.");
+                    } else {
+                        System.out.println("Ubicación no encontrada.");
+                    }
+                    break;
+
+                case 3:
+                    System.out.print("Nombre de la ubicación: ");
+                    String ub = sc.nextLine();
+                    UbicacionAlmacen u = buscarUbicacion(grafo, ub);
+
+                    if (u != null) {
+                        System.out.print("Código: ");
+                        String codigo = sc.nextLine();
+                        System.out.print("Nombre: ");
+                        String nomProd = sc.nextLine();
+                        System.out.print("Lote: ");
+                        String lote = sc.nextLine();
+
+                        Producto p = new Producto(codigo, nomProd, lote);
+                        try {
+                            u.getArbolProductos().insert(p);
+                            System.out.println("Producto insertado.");
+                        } catch (ItemDuplicated e) {
+                            System.out.println("Error: producto duplicado.");
+                        }
+                    } else {
+                        System.out.println("Ubicación no encontrada.");
+                    }
+                    break;
+
+                case 4:
+                    System.out.print("Nombre de la ubicación: ");
+                    String nombreUb = sc.nextLine();
+                    UbicacionAlmacen ubic = buscarUbicacion(grafo, nombreUb);
+
+                    if (ubic != null) {
+                        System.out.println("Productos en " + nombreUb + ":");
+                        ubic.getArbolProductos().mostrarInorden();
+                    } else {
+                        System.out.println("Ubicación no encontrada.");
+                    }
+                    break;
+
+                default:
+                    System.out.println("Opción no válida.");
+            }
         }
+    }
 
-        arboles[2].insertarProducto(new Producto("p001", "tornillos")); // inserta producto en estante a
-        arboles[3].insertarProducto(new Producto("p002", "tuercas")); // inserta producto en estante b
-
-        VisualizadorTexto.mostrarUbicaciones(grafo); // muestra todas las ubicaciones
-        VisualizadorTexto.mostrarRutas(grafo); // muestra todas las rutas con sus pesos
-        VisualizadorTexto.mostrarProductosPorUbicacion(arboles); // muestra productos iniciales
-
-        SimuladorInventario simulador = new SimuladorInventario(grafo, arboles); // crea el simulador
-
-        simulador.cerrarRuta(1, 2); // simula cierre de pasillo1→estanteA
-        simulador.simularAdicionProducto(2, new Producto("p003", "arandelas")); // añade arandelas
-        simulador.simularEliminacionProducto(3, "p002"); // elimina tuercas
-        simulador.simularCrecimientoInventario(4, new Producto("p004", "clavos")); // simula crecimiento
-        simulador.recalcularRutas(0); // recalcula rutas desde recepcion
-
-        System.out.println(); // imprime linea vacia de separacion
-        VisualizadorTexto.mostrarRutas(grafo); // muestra rutas tras simulaciones
-        VisualizadorTexto.mostrarProductosPorUbicacion(arboles); // muestra productos tras simulaciones
+    private static UbicacionAlmacen buscarUbicacion(GrafoDirigidoArrayList<UbicacionAlmacen> grafo, String nombre) {
+        for (UbicacionAlmacen u : grafo.getListVertices()) {
+            if (u.getNombre().equalsIgnoreCase(nombre)) {
+                return u;
+            }
+        }
+        return null;
     }
 }
