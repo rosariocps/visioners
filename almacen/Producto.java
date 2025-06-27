@@ -30,6 +30,7 @@ public class Producto implements Comparable<Producto> {
         //negativo si es menor
         //cero si es igual
         //positivo si es mayor
+        //ejemplo: // salida negativa, porque "A01" < "B02"
     }
 
     @Override
