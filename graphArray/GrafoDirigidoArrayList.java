@@ -6,6 +6,8 @@ import queuelink.PriorityQueueLinkSort;
 import queuelink.QueueLink;
 import stacklink.StackLink;
 
+/* Esta clase implementa un grafo dirigido genérico usando listas de adyacencia.
+   Sirve para representar ubicaciones (nodos) y rutas con peso (aristas) entre almacenes. */
 
 public class GrafoDirigidoArrayList<E> {
     protected ArrayList<Vertex<E>> listVertex;

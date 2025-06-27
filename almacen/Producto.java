@@ -34,4 +34,3 @@ public class Producto implements Comparable<Producto> {
         return nombre + " (Código: " + codigo + ", Lote: " + lote + ")";
     }
 }
-
